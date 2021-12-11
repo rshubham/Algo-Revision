@@ -1,0 +1,50 @@
+
+
+Apache Flink:
+
+1. Rule of Thumb: If your query is changing faster than your data then we should go for batch processing.
+2. Flink with its checkpoint mechanism makes sure that no data is lost in between processing.
+3. When your data is changing faster than your queries - go for Streaming.
+4. Check for lambda Architecture - batch processor for correct result, stream processor for fast but incorrect results.
+5. Apache Flink can provide fast and correct result at the same time - with less overhead/maintenence and devlopment cost.
+6. Core Building Blocks:
+    a. Event Streams :: real-time hindsight -- representing problem as a topology of apparatus to process real-time/historic data.
+    b. State :: complex business logic -- backup/restore data - provides exactly once semantics
+    c. (Event) Time :: consistency with out-of-order data and late data 
+    d. Snapshots :: forking / versioning / time travel - allows work with state outside of flink 
+
+
+Streaming Stages:
+
+Source -> Filter/Transform -> State read/write  \
+                            X                      sink
+Source -> Filter/Transform -> State read/write  /
+
+Streaming happens with data getting transferred continously in a window of quantas.
+7. In case of window operators, window content is the state. Flink has different state backend to store the window content. If a window is of say 5 seconds, then all the elements in this 5 seconds will be written into this flink state. Depending on the state backend - it'll be either persisted in Rocks DB (locally/disk). So, the amount of state persisted by the flink is dependent on the disk space present in the state locally/ total number of machines/containers that you're running.
+8. When data flows through the system, flink sends periodically - checkpoint barriers. Whenever a checkpoint barrier is flowing through the system, each operator is creating a local snapshot of the state at the time, the barrier arrives at the operator, which further written to the persistent storage - HDFS/S3.
+9. We use this state, in case your machine fails to recover the state. This is how the exactly once processing guarantee is maintained - its provided only for the registered states.
+10. Checkpoints/Safepoints  - we can take a state and trigger the processing from a specific safepoint in the system.
+
+11. Different Notions of Time in Flink:
+     Event Producer   ->   Messaging Queue   ->   Flink Data Source   ->   Flink Window Operator
+     (Event Time)     ->   (Broker Time)     ->   (Ingestion Time)    ->   (Window Processing Time)
+
+12. If you want to process events exactly in the order as it appears in the real world - then we need configure flink to use the Event Time. (Latency is high for real time e.g. if the source is down for some time then flink will process data accordingly in the order.)
+
+13. APIs
+    a. Analytics :
+        i) Stream SQL
+        ii) Table API (dynamic tables)
+    b. Stream & Batch Processing:
+        i) DataStream API (Streams/Windows)
+    c. Stateful Event Driven Applications:
+        i) Process Functions (events, state, time)
+
+14. Netflix uses it for Consolidated Logging: 
+    Build an integrated solution to provide insights into user behavior and application performance metrics through client side logging. Use Cases:
+    a. Personalization
+    b. Recommendations
+    c. A/B Experimentation
+    d. Application Performance
+15. 
