@@ -59,6 +59,8 @@
     + This could be used in making a call to different services in Microservices.
     + Citi-Direct: BSI Layer acted as Target - Multiple Adapters like Kafka/MQ/Job/OutboundCalls.
     
+    ![alt text]()
+    
 + **Composite** 
         
      + [Good Example](https://www.dofactory.com/net/composite-design-pattern)
