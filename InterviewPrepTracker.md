@@ -59,7 +59,7 @@
     + This could be used in making a call to different services in Microservices.
     + Citi-Direct: BSI Layer acted as Target - Multiple Adapters like Kafka/MQ/Job/OutboundCalls.
     
-    ![alt text]()
+    ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Adapter.jpeg)
     
 + **Composite** 
         
@@ -68,6 +68,8 @@
      +  Component as Employee
      +  Composite as Manager
      +  Leaf as Engineer / Architect / Assistant / BA etc. (IC roles)
+     
+     ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Composite.jpeg)
      
 + **Facade** 
 
@@ -102,6 +104,15 @@
     + **Decorator design pattern is helpful in providing runtime modification abilities and hence more flexible. Its easy to maintain and extend when the number of choices are more.**
     + **The disadvantage of decorator design pattern is that it uses a lot of similar kind of objects (decorators).**
     + **Decorator pattern is used a lot in Java IO classes, such as FileReader, BufferedReader etc.**
+    
+    + Movie Ticket Booking Decorator Example:
+    
+    ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Decorator_MovieTicketBooking.jpeg)
+    
+    + Library Item Decorator Example :
+    
+    ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Decorator_LibraryItem.jpeg)
+         
     
 + Template Method
 + Mediator
