@@ -1,4 +1,4 @@
-###DS Algo:
+### DS Algo:
 <hr>
 
 1. DS - revise all the DS basic questions - Linked Lists, Binary Tree, BST, Graphs :: This should be on my tips.
@@ -13,7 +13,7 @@
 
 <hr>
 
-###Java:
+### Java:
 
 1. Core Java Basic:
         
@@ -62,7 +62,7 @@
 
 <hr>
 
-###SQL/PLSQL
+### SQL/PLSQL
 
 <hr>
 
@@ -89,7 +89,7 @@
 
 <hr>
 
-###OOPS Concepts:
+### OOPS Concepts:
 
 The key technical differences between an abstract class and an interface are:
 
@@ -114,7 +114,7 @@ The key technical differences between an abstract class and an interface are:
 
 <hr>
 
-###MagicBricks Prep
+### MagicBricks Prep
 
 + DS/Algo:
     
