@@ -42,7 +42,7 @@
 
 <hr>
 
-###Design Patterns:
+### Design Patterns:
 
 + Singleton - Implementation of all types.
 + Factory Pattern
