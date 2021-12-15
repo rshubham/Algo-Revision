@@ -47,8 +47,8 @@
 + Singleton - Implementation of all types.
 + Factory Pattern
 + Abstract Factory
-+ Builder
-+ Prototype
++ **Builder** : when the Object contains a lot of attributes, and some params are optional to send.
++ **Prototype** : used when the Object creation is a costly affair and requires a lot of time and resources and you have a similar object already existing.
 + Adapter
 + Composite
 + Facade
@@ -112,3 +112,57 @@ The key technical differences between an abstract class and an interface are:
 [Static from non-static Context](https://javarevisited.blogspot.com/2012/02/why-non-static-variable-cannot-be.html#axzz7Dp4B87DM)
 
 
+<hr>
+
+###MagicBricks Prep
+
++ DS/Algo:
+    
+    + Graphs (/ n-ary Tree):
+        
+        + Generate Graph for normal edges
+        + Generate Graph for weighted edges
+        + Topological Sort - (Kahn's Algo, etc.)
+        + Find the shortest Path (Dijkstra's Algo)
+        + Print the Minimum Spanning Tree - (Kruskal's Algo)
+        + Loop Detection in a Graph (Floyd Warshall Algo)
+        
+   + Greedy:
+   
+        + Fractional Knapsack Problem
+        + Jump Game Problem
+   
+   + Recursion:
+   
+        + Print all the Permutations of a String/Array
+        + Islands Problem (BFS)
+        + Robots - find the unique path (DFS)
+        
+   + DP:
+        
+        + Longest Palindromic Substring
+        + Subset Sum
+        + 0/1 Knapsack Problem
+        + Buy/Sell Stock Problem
+        
+   + Trees (BT/BST):
+   
+        + Problem to check whether a tree is a BST or not?
+        + Left/Right/Top/Bottom View of a BT
+        + LCA of a BT
+        + Height of a BT
+        
+   + Linked-Lists:
+   
+        + Reverse a linked-list
+        + k-node reversal of a Linked-List
+        + Loop Detection in a Linked-List (Floyd Warshall Algo)
+        + Add two numbers stored in a linked list
+        
+   + Arrays/Strings:
+   
+        + Binary Search Algo
+        + Sorting Algo - Merge Sort/Quick Sort
+        + find kth smallest/largest element in a list/array.
+        + Trapping Rainwater Problem
+        + Leetcode Rainwater Problem
