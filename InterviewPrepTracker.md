@@ -136,10 +136,9 @@
 
         + Develop REST endpoints for an application using Spring Boot.
         
-        + RockPaperScissors Game using SpringBoot Rest: 
-        /Users/shubhamrohilla/Documents/Shubham/hackerEarth/04Dec-Vocera-Challenge/RockPaperScissorsGame
+        + RockPaperScissors Game using SpringBoot Rest: https://github.com/rshubham/RockPaperScissorsGame
    
-        + Spring Security and JWT
+        + Spring Security and JWT: 
         + Spring Security and OAuth 
         
    + Kafka
