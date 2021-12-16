@@ -71,6 +71,8 @@
    + Camel
    
    + Storm
+   
+   + JMS - How it implements different design patterns (Observer, Mediator etc.)
 
 <hr>
 
@@ -151,3 +153,4 @@ The key technical differences between an abstract class and an interface are:
         + find kth smallest/largest element in a list/array.
         + Trapping Rainwater Problem
         + Leetcode Rainwater Problem
+

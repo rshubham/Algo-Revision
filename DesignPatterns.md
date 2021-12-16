@@ -181,5 +181,45 @@
         
         ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Command_Runnable.jpeg)
         
-+ Strategy
-+ Observer
++ **Strategy**
+
++ **Observer** 
+
+    + [Good Example](https://www.journaldev.com/1739/observer-design-pattern-in-java)
+    + Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
+    + Can be understood a Publish-Subscribe Pattern, where multiple entities are there to subscribe and publish events.
+    + Subject as Order/booking Service Interface
+    + Concrete Subject as ScheduledOrder/OfflineOrder 'is a' Order/Booking
+    + Observer as NotificationService; PaymentService; InventoryService; DeliveryService;
+    + Concrete Observer - concrete implementation of Observer.
+    + Subject can:
+    
+        + register(Observer observer);
+        + unregister(Observer observer);
+        + notifyObservers();
+        + getUpdates(Observer observer);
+        
+    + Observer can:
+    
+        + setSubject(Subject subject);
+        + update()
+        
+    + **Java provides inbuilt platform for implementing Observer pattern through java.util.Observable class and java.util.Observer interface.**
+    + **Java Message Service (JMS) uses Observer design pattern along with Mediator pattern to allow applications to subscribe and publish data to other applications.**
+    + **Model-View-Controller (MVC) frameworks also use Observer pattern where Model is the Subject and Views are observers that can register to get notified of any change to the model.**
+    + **Implementation in Java**
+    
+        + java.util.EventListener in Swing
+        + javax.servlet.http.HttpSessionBindingListener
+        + javax.servlet.http.HttpSessionAttributeListener
+        
+    + **Example**
+    
+        + Ecommerce Implementation
+        
+        ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Observer_Ecom_Example.jpeg)
+        
+        + (Java) Messaging Service - my Design for Observer
+        
+        ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Observer_MyDesign_JMS.jpeg)
+        
