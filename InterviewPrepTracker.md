@@ -44,7 +44,7 @@
 
 ### Design Patterns
 
-  Go to this link for Design Pattern notes : [DesignPatternNotes](https://github.com/rshubham/Revision_Notes/blob/master/DesignPattern.md) 
+  Go to this link for Design Pattern notes : [DesignPatternNotes](https://github.com/rshubham/Revision_Notes/blob/master/DesignPatterns.md) 
 
 <hr>
 
