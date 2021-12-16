@@ -130,7 +130,7 @@
 ### Projects (Deploy all these projects in Azure VM instance)
 
 1. [Azure Link](https://portal.azure.com/#home)
-2. Azure Credentials: shivam.lynux@outlook.com/Shiv_2108
+2. Azure Credentials: c2hpdmFtLmx5bnV4QG91dGxvb2suY29tL1NoaXZfMjEwOA==
 
    + Spring Boot / Spring Framework: 
 
