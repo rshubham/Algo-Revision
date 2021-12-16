@@ -183,6 +183,27 @@
         
 + **Strategy**
 
+    + [Good Example 1](https://www.journaldev.com/1754/strategy-design-pattern-in-java-example-tutorial)
+    + [Good Example 2](https://www.dofactory.com/net/strategy-design-pattern)
+    + Strategy pattern is used when we have multiple algorithm for a specific task and client decides the actual implementation to be used at runtime.
+    + We define multiple algorithms and let client application pass the algorithm to be used as a parameter.
+    + One of the best example of strategy pattern is Collections.sort() method that takes Comparator parameter. Based on the different implementations of Comparator interfaces, the Objects are getting sorted in different ways.
+    + This can be understood as Payment Service Example
+    + Strategy as PaymentStrategy - what way to make payment?
+    + Concrete Strategy - Cash/Card/UPI/Paypal/Wallet/Crypto
+    + CalledObject - the object on which we need to implement a strategy on.
+    + **We could have used composition to create instance variable for strategies but we should avoid that as we want the specific strategy to be applied for a particular task. Same is followed in Collections.sort() and Arrays.sort() method that take comparator as argument.**
+    + **Strategy Pattern is very similar to State Pattern. One of the difference is that Context contains state as instance variable and there can be multiple tasks whose implementation can be dependent on the state whereas in strategy pattern strategy is passed as argument to the method and context object doesn’t have any variable to store it.**
+    + **Example**
+    
+        + Sorting
+        
+         ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Strategy_Sort.jpeg)
+         
+         + PaymentService with Decorator Pattern
+         
+         ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Strategy_Payment_Decorator.jpeg)
+
 + **Observer** 
 
     + [Good Example](https://www.journaldev.com/1739/observer-design-pattern-in-java)
