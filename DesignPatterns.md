@@ -83,7 +83,25 @@
     
     ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/TemplateMethod.jpeg)
     
-+ Mediator
++ **Mediator**
+
+    + [Good Example](https://www.journaldev.com/1730/mediator-design-pattern-java)
+    + Can be understood a multiple services having dependencies on each other thus creating tight coupling between them. We can take example of BookingService and Location Service.
+    + Mediator as ParkingIntegrationService
+    + Mediator Concrete as BookingLocationIntegrator 'is a' ParkingIntegrationService.
+    + Colleague Classes as BookingService and LocationService - who are inter-dependent.
+    + **Mediator promotes loose coupling by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.**
+    + **Example in JDK**
+     
+      + java.util.Timer class scheduleXXX() methods
+      + Java Concurrency Executor execute() method.
+      + java.lang.reflect.Method invoke() method.
+    + **Java Message Service (JMS) uses Mediator pattern along with Observer pattern to allow applications to subscribe and publish data to other applications.**
+    + **We should not use mediator pattern just to achieve lose-coupling because if the number of mediators will grow, then it will become hard to maintain them.**
+    + My Example - BookingService and LocationService
+    
+    ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Mediator.jpeg)
+
 + Chain of Responsibility
 + Command
 + Strategy
