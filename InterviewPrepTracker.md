@@ -114,7 +114,19 @@
     ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Decorator_LibraryItem.jpeg)
          
     
-+ Template Method
++ **Template Method**
+
+    + [Good Example](https://www.journaldev.com/1763/template-method-design-pattern-in-java)
+    + Can be understood as BatchProcessing in OT
+    + Template as DataImport
+    + Implementation as Import Mgmt, FBDI or we can say BI Report
+    + **All non-abstract methods of java.io.InputStream, java.io.OutputStream, java.io.Reader and java.io.Writer.**
+    + **Template method should consists of certain steps whose order is fixed and for some of the methods, implementation differs from base class to subclass. Template method should be final.**
+    + **Methods in base class with default implementation are referred as Hooks, and they are intended to be overridden by subclasses, if you want some methods to be not overridden, you can make them final, for example in our case we can make buildFoundation() method final because if we don’t want subclasses to override it.**
+    + OT Batch Template Method Example with Adapter Structure:
+    
+    ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/TemplateMethod.jpeg)
+    
 + Mediator
 + Chain of Responsibility
 + Command
