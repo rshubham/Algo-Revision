@@ -146,7 +146,7 @@
         
      ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/ChainOfResponsibility_Approver.jpeg)
      
-         + BatchProcessor System
+    + BatchProcessor System
                 
       ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/ChainOfResponsibility_BatchProcessor.jpeg)
 
