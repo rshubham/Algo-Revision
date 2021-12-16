@@ -1,10 +1,19 @@
-### Design Patterns:
+## Design Patterns:
+
+<hr>
+
+### Creational Pattern
 
 + Singleton - Implementation of all types.
 + Factory Pattern
 + Abstract Factory
 + **Builder** : when the Object contains a lot of attributes, and some params are optional to send.
 + **Prototype** : used when the Object creation is a costly affair and requires a lot of time and resources and you have a similar object already existing.
+
+<hr>
+
+### Structural Pattern
+
 + **Adapter** 
     
     + [Good Example](https://www.dofactory.com/net/adapter-design-pattern)
@@ -69,6 +78,9 @@
     
     ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Decorator_LibraryItem.jpeg)
          
+<hr>
+
+### Behavioral Pattern
     
 + **Template Method**
 
