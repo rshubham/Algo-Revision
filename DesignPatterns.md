@@ -150,6 +150,32 @@
                 
       ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/ChainOfResponsibility_BatchProcessor.jpeg)
 
-+ Command
++ **Command**
+
+    + [Good Example](https://www.journaldev.com/1624/command-design-pattern)
+    + Can be understood as TV-Remote Command Example.
+    + Invoker as TVRemoteControl
+    + Command as TVCommand - Interface/Abstract Class
+    + Concrete Command as TurnTVOnCmd, TurnTVoffCmd, TurnVolUpCmd, etc. 'is a' TV Command and 'has a' 'TV'
+    + Receiver as TV 
+        
+        + turnOn()
+        + turnOff()
+        + turnVolUp()
+        + turnVolDown()
+    
+    + **Command implementation classes chose the method to invoke on receiver object, for every method in receiver there will be a command implementation. It works as a bridge between receiver and action methods.**
+    + **The drawback with Command design pattern is that the code gets huge and confusing with high number of action methods and because of so many associations.**
+    + **Runnable interface (java.lang.Runnable) and Swing Action (javax.swing.Action) uses command pattern.**
+    + Example
+        
+        + Generic
+        
+        ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Command_Generic.jpeg)
+        
+        + TV Example
+        
+        ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Command_TV.jpeg)
+        
 + Strategy
 + Observer
