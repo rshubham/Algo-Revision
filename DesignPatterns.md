@@ -1,7 +1,8 @@
-### Design Patterns:
+## Design Patterns:
 
+<hr>
 
-#### Creational Pattern
+### Creational Pattern
 
 + Singleton - Implementation of all types.
 + Factory Pattern
@@ -11,7 +12,7 @@
 
 <hr>
 
-#### Structural Pattern
+### Structural Pattern
 
 + **Adapter** 
     
@@ -79,7 +80,7 @@
          
 <hr>
 
-#### Behavioral Pattern
+### Behavioral Pattern
     
 + **Template Method**
 
