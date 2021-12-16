@@ -102,7 +102,42 @@
     
     ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/Mediator.jpeg)
 
-+ Chain of Responsibility
++ **Chain of Responsibility**
+
+    + [Good Example 1](https://www.journaldev.com/1617/chain-of-responsibility-design-pattern-in-java)
+    + [Good Example 2](https://www.dofactory.com/net/chain-of-responsibility-design-pattern)
+    + Can be understood as Functionality of Role Based Approval System
+    + Chain Handler as RequestApprover 
+    
+        + approve()
+        + reject()
+        + setNextApprover(RequestApprover approver)
+        + RequestApprover approvalChain;
+        
+    + Concrete Handler as FirstLevelApprover, SecondLevelApprover,..., NthLevelApprover
+    + Client as Client who will call Handler
+    + **Every object in the chain should have reference to the next object in chain to forward the request to, its achieved by java composition.**
+    + **Chain of Responsibility design pattern is good to achieve lose coupling but it comes with the trade-off of having a lot of implementation classes and maintenance problems if most of the code is common in all the implementations.**
+    + **Examples in Java**
+    
+        + java.util.logging.Logger#log()
+        + javax.servlet.Filter#doFilter()
+        
+    + **Comments** 
+    
+        + You may set or change the next handler during runtime. You also may not know beforehand which are the handlers that should be used, allowing the client to set them as desired. As an example, you could have many Validator classes which can be called in a certain order. But that depends on the validation. So you apply CoR and make good use out of the possibility of combining different validators ordered in so many different ways. Suppose you want to validate an email address. You need to check if the e-mail is correctly formed, if it exists, and if contains bad words. To do this job, you may have three different classes, and you can arrange them in any order – so you might as well let the client decide its own priority.
+        + I commonly see that there is repeated code in the concrete classes just like the implementation of your dispense methods. The intent of this design pattern is nice, but dont forget the DRY principle and it is a must in my humble opinion. I always use abstract classes for cor design pattern to eliminate duplicate code.
+    
+    + **Examples**
+    
+        + Approver System
+        
+     ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/ChainOfResponsibility_Approver.jpeg)
+     
+         + BatchProcessor System
+                
+      ![alt text](https://github.com/rshubham/Revision_Notes/blob/master/Design_Pattern_Images/ChainOfResponsibility_BatchProcessor.jpeg)
+
 + Command
 + Strategy
 + Observer
