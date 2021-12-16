@@ -142,16 +142,15 @@
 ### Projects (Deploy all these projects in Azure VM instance)
 
 1. [Azure Link](https://portal.azure.com/#home)
-2. Azure Credentials: shivam.lynux@outlook.com/Shiv_2108
+2. Azure Credentials: c2hpdmFtLmx5bnV4QG91dGxvb2suY29tL1NoaXZfMjEwOA==
 
    + Spring Boot / Spring Framework: 
 
         + Develop REST endpoints for an application using Spring Boot.
         
-        + RockPaperScissors Game using SpringBoot Rest: 
-        /Users/shubhamrohilla/Documents/Shubham/hackerEarth/04Dec-Vocera-Challenge/RockPaperScissorsGame
+        + RockPaperScissors Game using SpringBoot Rest: [RockPaperScissorsGame](https://github.com/rshubham/RockPaperScissorsGame)
    
-        + Spring Security and JWT
+        + Spring Security and JWT: [SpringSecurity using JWT](https://github.com/rshubham/springSecurityApp)
         + Spring Security and OAuth 
         
    + Kafka
