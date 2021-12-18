@@ -22,6 +22,8 @@
    + Polymorphism
    + Inheritance
    + JVM / Memory Model / Garbage Collector
+   
+        + [Garbage Collection Working](https://javarevisited.blogspot.com/2011/04/garbage-collection-in-java.html#axzz7FKNhlkRJ)
    + Strings
    + resources:
         1) [OOPS Programming Questions](https://javarevisited.blogspot.com/2020/05/object-oriented-programming-questions-answers.html#axzz7Dp4B87DM)
@@ -154,3 +156,10 @@ The key technical differences between an abstract class and an interface are:
         + Trapping Rainwater Problem
         + Leetcode Rainwater Problem
 
+<hr>
+
+**Intro**
+
+         I'm working as a Senior Application Developer with Oracle with Customer Data Integrations Team. My role involves multiple responsibilities like to design and develop the tools and applications for multiple teams within Oracle Application Labs. I have developed multiple applications with different technologies like Java, pl/sql and implemented the CI/CD pipeline as well.
+         
+ 
