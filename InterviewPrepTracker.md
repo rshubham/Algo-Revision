@@ -162,7 +162,7 @@ The key technical differences between an abstract class and an interface are:
 
 #### MagicBricks
 
-**Round 1:=**
+**Round 1:**
 
    1. Microservices: How services interact in Microservices, Circuit-Breaker, REST API
    2. Spring Boot : Profiling, Annotations, Diff between MVC and Boot, Hibernate - ORM, Actuators.
