@@ -6,7 +6,7 @@
 
 How to Connect with VM: ssh -i KafkaTesting_key.pem azureuser@20.106.150.2
 
-Ensure you have gven read-only access to the private key : chmod 400 KafkaTesting_key.pem
+Ensure you have given read-only access to the private key : chmod 400 KafkaTesting_key.pem
 
 Generic Command to generate a public key corresponding to your private key:
 ssh-keygen \

@@ -57,7 +57,7 @@
 ### Projects (Deploy all these projects in Azure VM instance)
 
 1. [Azure Link](https://portal.azure.com/#home)
-2. Azure Credentials: c2hpdmFtLmx5bnV4QG91dGxvb2suY29tL1NoaXZfMjEwOA==
+2. Azure Credentials: c2hpdmFtLmx5bnV4QG91dGxvb2suY29tL1NoaXZfMjEwOA==(shivam.lynux@outlook.com/Shiv_2108)
 
    + Spring Boot / Spring Framework: 
 
@@ -164,11 +164,20 @@ The key technical differences between an abstract class and an interface are:
 
 **Round 1:**
 
-   1. Microservices: How services interact in Microservices, Circuit-Breaker, REST API
+   1. Microservices: How services interact in Microservices, Circuit-Breaker, REST API, Zuul API Gateway
    2. Spring Boot : Profiling, Annotations, Diff between MVC and Boot, Hibernate - ORM, Actuators.
    3. Java 8: Lambda Expressions.
    4. Diff between String, String Builder, String Buffer - which is suitable to use in multithreaded envt.
    5. Kafka : How Producer and Consumer works in Kafka.
+
+
+<hr>
+
+TBD:
+
+https://leetcode.com/problems/my-calendar-i/
+https://leetcode.com/discuss/interview-question/1488563/Microsoft-On-campus-2021-India
+
 
 <hr>
 
