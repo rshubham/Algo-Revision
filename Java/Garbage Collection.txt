@@ -1,0 +1,77 @@
+Garbage Collection:
+---------------------------------------
+---------------------------------------
+
+0. GC is a mechanism for JVM to reclaim heap space from Objects which are eligible for GC.
+1. Eligibility for GC: When an object doesn't have any strong live reference / not reachable from any thread.
+2. GC Types : G1 (>= JDK 1.7)
+3. Memory Leak in Java: If an Object which is eligible for collection but still lives in memory. 
+4. ThreadLocal variables can cause Memory Leak.
+5. Objects are created in heap irrespective of their scope (local/member variables)
+6. Variables/static members are created in Method Area.
+7. Both Heap and Method Area is a shared resource for different threads.
+8. GC is acheived by Daemon Thread which is call Garbage Collector.
+9. GC thread invokes - finalize() on the object before cleaning up. This provides opportunity to do any sort of cleanup before GC.
+10. GC can't be forced but decided by GC when it requires heap space.
+11. Methods used for GC: Runtime.gc(), System.gc() => This doesn't gaurantee GC.
+12. If there is no memory in Heap Space then JVM throws OutOfMemoryError.
+
+Heap Generations:
+---------------------------------------
+
+1. JVM Heap Memory is divided into multiple generations of spaces:
+    a. Young Generation:
+        i) Eden Space
+        ii) Survivor 1
+        iii) Survivor 2
+    b. Tenured or Old Generation
+    c. Perm Area
+2. When a new Object is created in Java, memory allocation happens in Eden Space.
+3. If new Object survives minor GC in Young Gen, it gets moved to Survivor 1 and further to Survivor 2.
+4. Major GC moves the Survivor 2 objects to Tenured/Old Generation.
+5. Heap stores metadata for classes/methods + String Constant Pool (depends on JVM implementations.)
+
+Types of GC: (only Serial GC till Java 1.4)
+-------------------------------------------
+
+1. Throughput GC: 
+    a. Uses Parallel version of Young Gen collector.
+    b. It's used if -XX:+UseParallelGC is passed to the Runtime via Java cmd line options.
+    c. Tenured Gen collector is same as Serial GC.
+
+2. Concurrent Low Pause Collector:
+    a. It's used if -Xingc / -XX:+UseConcMarkSweepGC is passed to the Runtime via Java cmd line options.
+    b. It's also referred as Concurrent Mark Sweep Garbage Collector.
+    c. Used to Collect Tenured Generation.
+    d. Works concurrently with the application execution.
+    e. Application is paused for short periods during collection.
+    f. Parallel Version of Young Gen is used alongwith Concurrent Collector.
+    g. Concurrent Mark Sweep GC is most widely used GC.
+    h. It uses Mark-Sweep Algorithm for GC.
+
+3. Incremental Low Pause Collector:
+    a. It's used if -XX:+UseTrainGC is passed to the Runtime via Java cmd line options.
+    b. This garbage collector has not changed since java 1.4.2 and is currently not under active development.
+    c. It will not be supported in future releases so avoid using this.
+
+4. An important point to note is that -XX:+UseParallelGC should not be used with -XX:+UseConcMarkSweepGC.
+
+Full GC and Concurrent GC:
+---------------------------------------
+
+1. Concurrent GC - works with single GC thread which runs along with other application threads.
+2. Concurrent GC goal is to complete the Tenured Gen before it becomes full. This is usually acheived in normal operation.
+3. If Concurrent GC not able to finish before Tenured Gen fills up then application is paused and collection is completed with all other application threads paused, such Collection is referred to as Full GC.
+5. Full GC is a sign that there needs to be some adjustments required in Concurrent Collection Params.
+6. Always try to avoid or minimize full Full GC because it affects the performance of Java applications
+
+Important Points:
+---------------------------------------
+
+1. String pool is created in PermGen area of Heap, garbage collection can occur in perm space but depends upon JVM to JVM. By the way from JDK 1.7 update, the String pool is moved to the heap area where objects are created.
+2. JVM command-line options –Xmx and -Xms are used to set up starting and max size for Java Heap. The ideal ratio of this parameter is either 1:1 or 1:1.5 based on my experience, for example, you can have either both –Xmx and –Xms as 1GB or –Xms 1.2 GB and 1.8 GB.
+3. There is no manual way of doing garbage collection in Java, but you can use various reference classes e.g. WeakReference or SoftReference to assist garbage collectors.
+3. With Java 8, PermGen was replaced with a new mechanism called “Metaspace” which serves the same purpose but implemented in a different way. Most prominently, since Java 8 there’s no need to specify the PermGen size as Metaspace dynamically resizes at runtime.
+
+
+

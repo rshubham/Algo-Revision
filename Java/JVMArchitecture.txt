@@ -1,0 +1,59 @@
+
+1. Class Loader
+Types => Bootstrap, Extensible, Application
+Functions => Loading, Linking, Initialization
+
+--------------------------------------
+
+Loading:
+1. Reads .class file => generates binary data and save it in the method area.
+2. Method Area:
+    a. Fully Qualified name of loaded class and its immediate parent class.
+    b. Type of the Class - class/interface/enum
+    c. Modifier, Variables and Method information.
+3. After Loading, JVM creates an Object of Type Class in Heap. This is not object of class but of the Type Class (java.lang.package)
+4. This Class Object provides class level info like class name, methods and variable info.
+5. MyObject myObject = new MyObject(); Class myClass = myObject.getClass();
+6. For Every loaded ".class" file one object of type Class will be created.
+
+Linking:
+1. Verification:
+    a. Ensures the correctness of .class file.
+    b. If Verification fails, we get RuntimeException: java.lang.VerifyError
+    c. This Activity is performed by the component: ByteCodeVerifier
+    d. After completion of this activity, class file is ready for compilation.
+2. Preparation: JVM allocates memory for class variables and initializing the memory to default values.
+3. Resolution: Replaces - symbolic references from the type to direct references.
+
+Initialization:
+1. All static variables are assigned with their values defined in the code/static block.
+2. Executed from Top to Bottom in a class and from Parent to Child in heirarchy.
+
+--------------------------------------
+
+1. Bootstrap Class Loader:
+    a. It exists in every JVM implementation.
+    b. Loads core java API classes present in "JAVA_HOME/jre/lib" directory.
+    c. "JAVA_HOME/jre/lib" => Called as Bootstrap path.
+    d. Implemented in native languages like C/C++.
+
+2. Extension Class Loader:
+    a. Child of Bootstrap Class Loader.
+    b. Loads classes present in Extension Directory: "JAVA_HOME/jre/lib/ext".
+    c. It loads classes from the path specified by system property: java.ext.dirs
+    d. It is implemented in java by the sun.misc.Launcher$ExtClassLoader class.
+
+3. Application Class Loader:
+    a. It is a child of the extension class loader.
+    b. It is responsible to load classes from the application classpath.
+    c. It internally uses Environment Variable which mapped to java.class.path.
+    d. It is also implemented in Java by the sun.misc.Launcher$AppClassLoader class.
+
+
+ClassNotFoundException: 
+
+a. Trying to get the class using getClass().
+b. System/Application Class Loader delegates to Extension Class Loader.
+c. Extension Class Loader delegates to Bootstrap
+d. Then if not found it Backtracks the same path and check in every Class Loader implementation.
+e. Still not found -> Throws ClassNotFoundException.

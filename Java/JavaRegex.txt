@@ -1,0 +1,10 @@
+Java Regex:
+
+1. Regular expressions can be used to perform all types of text search and text replace operations.
+2. To work with Regular Expressions: java.util.regex
+3. classes involved:
+    a. Pattern Class - Defines a pattern (to be used in a search)
+    b. Matcher Class - Used to search for the pattern
+    c. PatternSyntaxException Class - Indicates syntax error in a regular expression pattern
+4. 
+

@@ -1,0 +1,65 @@
+String Problems LC:
+
+LC6: https://leetcode.com/problems/zigzag-conversion/submissions/
+Approach: Traverse the String, starting with currRow = 0 -> numRows, concat String in HashMap; 
+For Links - traverse in another while loop with currRow > 1, cancat String in HashMap; 
+Continue in while loop till i < N; Concat the zigzag String from hashMap and return.
+Time - O(n) n - string length
+Space - O(numRows) = HashMap
+
+Sliding Window Problems:
+Discuss:
+
+https://leetcode.com/discuss/general-discussion/657507/Sliding-Window-for-Beginners-Problems-or-Template-or-Sample-Solutions
+
+Problems:
+https://leetcode.com/list/x17aw7vm/
+
+DP Discuss:
+https://leetcode.com/discuss/general-discussion/662866/DP-for-Beginners-Problems-or-Patterns-or-Sample-Solutions
+http://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf
+
+search in google: algorithms.wtf
+
+Important Algo:
+
+Z Algo for Pattern Matching: https://www.youtube.com/watch?v=CpZh4eF8QBw&list=PLrmLmBdmIlpvxhscYQdvfFNWU_pdkG5de
+Manacher Algo : https://www.youtube.com/watch?v=V-sEwsca1ak&list=PLrmLmBdmIlpvxhscYQdvfFNWU_pdkG5de&index=2
+
+
+Sliding Window Problems and Approach:
+
+1. https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
+
+my Approach: 
+We have to find the longest subarray with each element having diff b/w them <= limit. So, we have to verify element which we consider with the curr window min value and max value, if the curr element lies in between the min and max, then we should add it in the window, otherwise shrink the window from start and update min/max values accordingly.
+To track - min and max values we have to store the min/max values somewhere. if in case while shrinking the window, we remove the max/min element from the window then we should know the next min/max element in the window to do further comparisons. So, we have to store min/max values in a minHeap and maxHeap and compare the length of minHeap to return the final answer.
+Time - O(4*n*log(n)) => O(nlog(n)) // adding and removing indivual element in heap takes log(n) time.
+Space - O(2*n) => O(n)
+
+2. https://www.lintcode.com/problem/386/
+Desc: Longest Substring with At Most K Distinct Characters
+
+Approach: 
+We have to find the Longest Substring with distinct characters  <= K. So, we need to apply sliding window approach:
+1. Take slow pointer, initialize it to 0, Take fast pointer, initialize it to 0.
+2. Initialize a hashmap to store the characters and its frequency within the string.
+3. Traverse the String using fast pointer, and update the hashmap till the size of hashmap > K.
+4. Update the maxLength with every iteration.
+5. Now Shrink the window, using slow pointer till size of hashmap comes within the range again.
+6. return the result as the maxLength.
+
+3. https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/
+Desc: 1358. Number of Substrings Containing All Three Characters
+
+Approach:
+We have to find the number of substrings containing all 3 characters i.e. a,b,c
+1. Sliding Window - take 2 pointers start, end - initialize to 0.
+2. take a hashmap to check the frequency and define the window elements scope.
+3. Traverse the String - if hashMap size = 3, then shrink the window / increment start pointer till map size becomes 3 again.
+4. While Shrinking - decrease the frequency of elements moving out of scope of the window, if freq is 1 then remove the element from the map.
+5. While shrinking - update the count += String Length  - end Pointer + 1, as we have all elements covered already. So, all the substrings formed including those elements will be counted like this.
+6. increase the start pointer and shrink the size. Do it in the inner while loop which has condition - hm.size()== 3.
+7. logic of outer - while loop that is increasing window scope should be coded below the shrink logic, to update the end pointer in the same iteration only.
+8. return the count after coing out of the loop.
+9. Time : O(n)

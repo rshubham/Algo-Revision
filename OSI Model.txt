@@ -1,0 +1,34 @@
+OSI Model:
+
+source: https://www.youtube.com/watch?v=7IS7gigunyI
+
+Intro:
+
+OSI stands for Open Systems Inter-Connection Model
+
+Layers:
+
+Layer 7 : Application  :: Creates an http request like this -> [GET / 10.0.0.3 80 Http Headers cookies, content-type etc.]
+Layer 6 : Presentation :: Encrypts the http request if its https otherwise skips this step.
+Layer 5 : Session      :: Establish the Session and tag the [SessionId] with the http request.
+Layer 4 : Transport    :: Breaks the data into segment of bytes and append some information like source port and destination port.
+e.g. Segments ({[source port: 123] : data in bytes/bits : [dest port: 80]},{[123] : data in bytes/bits : [80]})
+Layer 3 : Network      :: Append the segment with source/dest IP and form packets 
+e.g. Packets {[(10.0.0.5)Segment1(10.0.0.3)],[(10.0.0.5)Segment2(10.0.0.3)]...[(10.0.0.5)Segmentx(10.0.0.3)]}
+Layer 2 : Data Link    :: break the packets into multiple frames and append the source/dest mac addresses. (uses arp: address resolution protocol)
+e.g. Frames {[(S)Packet1(D)],[(S)Packet2(D)]...[(S)PacketX(D)]}
+Layer 1 : Physical     :: binary data 
+
+
+-----------------
+
+Load Balancers:
+1. Layer 4 LB : This is a LB which is deployed on the Network Layer / Transport Layer - it doesn't do anything but routing the 
+request to the random servers. It doesn't terminate the TLS of the https request but updates the target IP in the https request
+and it acts as a single TCP connection over the network.
+
+2. Layer 7 LB : This is more of an Application Level Load Balancing and involves in the distributing the incoming request to the 
+different endpoints as called. It terminates the TLS and decrypts the request and checks which server to call. It acts 
+as an entrypoint for request and forms a new TCP connection with the target endpoint server which client is not aware of and similarly
+target server as well. target server can be another LB/API Gateways to a group of microservices running in the backend, it responds
+with the response to the Layer 7 LB/API Gateway which further responds back to the Client.

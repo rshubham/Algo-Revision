@@ -1,0 +1,55 @@
+Java Generics:
+
+source: https://www.youtube.com/watch?v=K1iu1kXkVoA
+
+1. Generics are used in Java to define the Type of an Object we're creating.
+2. Suppose we have to expand that Object to multiple types not just for the specific types, then we should use Generics.
+3. It creates a standard for the Type of my Object being created.
+4. E.g. List<Cat> cats = new ArrayList<Cat>();, If I try to add cats.add(new Dog()) - then it'll not accept.
+5. Why not use Object only instead of Generics ? - Because the Generics provide a Type safety as mentioned above and makes the code type cast clean.
+6. Bounded Generic: If we want the object only of the Specific Heirarchy of objects then we can extend it like Printer<T extends Animals>.
+
+Using Interface and Classes with Generics: Printer<T extends Animals & Serializable>.
+
+Generic Methods:
+
+private static <T> void shout(T thingToShout){
+    System.out.println(thingToShout + "!!!!");
+}
+shout("Shubham"); => 
+Shubham!!!!
+
+private static <T,V> void shout(T thingToShout, V otherThingToShout){
+    System.out.println(thingToShout + "!!!!");
+    System.out.println(otherThingToShout + "!!!!");
+}
+
+
+shout("Shubham",986); => 
+Shubham!!!!
+986!!!!
+
+
+private static <T,V> T shout(T thingToShout, V otherThingToShout){
+    System.out.println(thingToShout + "!!!!");
+    System.out.println(otherThingToShout + "!!!!");
+    return thingToShout;
+}
+
+System.out.println(shout("Shubham",986));=>
+Shubham!!!!
+986!!!!
+Shubham!!!!
+
+
+Wildcards:
+
+1. Unbounded Wildcards:
+    a. The unbounded wildcard type is specified using the wildcard character (?)
+    b. List<?>, This is called a list of unknown type.
+    c. There are two scenarios where an unbounded wildcard is a useful approach:
+        i) If you are writing a method that can be implemented using functionality provided in the Object class.
+        ii) When the code is using methods in the generic class that don't depend on the type parameter. For example, List.size or List.clear. In fact, Class<?> is so often used because most of the methods in Class<T> do not depend on T.
+2. Bounded Wildcards:
+    a. List<? extends Animals>
+    

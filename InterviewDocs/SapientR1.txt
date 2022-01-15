@@ -1,0 +1,254 @@
+// package whatever; // don't place package name!
+// Installed Libraries: JSON-Simple, JUNit 4, Apache Commons Lang3
+import java.io.*;
+
+/*
+
+Verify if a String is a Palindrome or not.
+
+"naman" : String, Output : true
+
+length = even/odd
+
+"namman". n-1/2
+
+"naman"
+  j i
+n a m a n
+
+isPalidriomeCheck = true
+*/
+
+
+class MyCode {
+  
+  private static boolean isPalindrome(String s){
+    if(s == null || s.isEmpty()) return false;
+    int i = 0;
+    int j = s.length()-1;
+    s.toLowerCase();
+    // to lower case ascii - 65-90 => Upper Case, 90-1
+    
+    boolean isPalidriomeCheck = true;
+    
+    while {
+      
+    }
+    while(i <= j){
+      if(s.charAt(i) == s.charAt(j)){
+        isPalidriomeCheck &= true;
+        i++;
+        j--;
+      } else {
+        return false;
+      }
+    }- O(s.length()) n^2
+    return isPalidriomeCheck;
+}
+  
+  
+	public static void main (String[] args) {
+		
+    System.out.println(MyCode.isPalindrome(null)); // Rar
+    
+    
+    
+    
+	}
+}
+
+
+class A implements Cloneable, Comparable{
+  
+  int value
+  
+  int compareTo(Object o){
+    //
+  }
+  
+  public boolean equals(Object o){
+    //
+  }
+  
+  public int hashCode(){
+    
+  }
+  
+  private final B b;
+  
+  private A(B b){
+    b = b;
+  }
+  
+  // String
+  String s = new String("Shubham");
+  s="Ram";
+    s="Shyam";
+    
+ 
+  
+  TreeMap<A,A> map = new TreeMap<A,A>();
+  
+  
+  
+  
+  
+  public A getInstance(){
+    return 
+  }
+  
+  clone() {
+    
+  }
+  
+}
+
+
+Creation = Singleton, Factory, Builder
+Structural = Decorator, Adapter,
+Behaviour = Command, Chain of Responsibility
+
+logger 
+Approval l1, l2, l3
+JVM = ClassLoading
+
+
+
+
+List<String> stList = Arrays.asList("AA", "BB","BE", "CC","DD");
+
+    stList.stream().filter(s -> !s.startsWith("B")).collect();
+    
+    stList.flatMap()
+
+
+		stList.remove("CC");
+    
+concurrent 
+Fail Fast = ConcurrentModification
+Iterator
+    
+    
+    
+    
+Callable {
+  
+  Object call(){
+    
+  }
+  
+}
+n 
+    Object - Lock - wait(), notify(), 
+    
+    
+volatile 
+
+ExectuorService exec = Executors.singleThreadPool();
+
+ExectuorService exec = Executors.nexwFixedThreadPool(4);
+/*
+newFixed
+workSteal
+CacheThreadPool
+*/
+FutureTask
+exec.execute(Call);
+
+--------------
+
+
+Producer => Topic  ---- n Subscriber
+
+--------
+
+KafkaBroker1 => 
+KafkaBroker2
+KafkaBroker3
+
+------
+
+Zookeeper
+
+------
+
+topic A,
+topic B,
+topic C
+
+AMQP
+
+
+@query("")
+
+DDL
+
+procedure()
+
+function
+
+-----------------
+
+
+--------------
+
+AWS => 
+
+-----------
+
+  -----> LB 
+  
+ 
+  
+  DDoS
+  
+  
+  build.pipeline, install.pipeline
+  {
+    stage()
+    
+  }
+  
+  ----
+  
+
+  
+  
+  ---
+  
+ 
+  
+  
+  http://myEndpoint/myrest?parm=1&parm=2
+  http://myEndpoint/myrest/{path}
+  
+  
+  --
+  
+  client,secret ----> 
+  json web token =>
+
+
+-----------
+1. Write a Program to check whether a String is a Palindrome or not?
+2. How to make a class Cloneable.
+3. What is immutability and How to make a Class immutable ? How String is immutable ?
+4. What is Composition and What is the Aggregation and Association ?
+5. TreeSet and TreeMap internal working
+6. notify() and notifyAll() ? why do we need notifyAll()
+7. ThreadLocal vs volatile in multithreading.
+8. Executor Service in Java
+9. How do we partition Topics among multiple brokers
+10. AMQP
+11. difference between procedure and function
+12. Multitenancy ?
+13. How do we write pipeline scripts for jenkins - example ?
+14. Completable Future?
+--------------
+P => 
+--------------
+40-50%
+SE => 19-20
+--------------
+Core - Java/Multithreading => SE
+--------------

@@ -1,0 +1,32 @@
+Blind 75 Problems:
+
+1. Two Sum : (15 mins)
+    a. LC Link: https://leetcode.com/problems/two-sum/submissions/
+    b. Brute Force: 
+        i) Iterate over other the elements taking 1 element into consideration and find the pair which sums to target.
+        ii) Time: O(n^2), Space: O(1)
+    c. Efficient:
+        i) Use HashMap to store key: Target - nums[i], value: i, Iterate over the array and check for all the positions where index is different.
+        ii) Time: O(n), Space: O(n)
+
+2. Length of Longest Substring: (20 mins)
+    a. LC Link: https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/
+    b. My Approach:
+        i) Create map<char,int>
+        ii) Iterate over String - check if the char is already present in map, if not add it to the map.
+        iii) If the char is present in the map - clear the map and update curr index to map.get(x) and update the max length and continue.
+        iv) After moving out of the loop - update the maxLength again.
+        v) Time: O(n), Space: O(n)
+
+3. Longest Palindromic Substring: (LC: Medium but hard to implement)
+    a. LC link: https://leetcode.com/problems/longest-palindromic-substring/submissions/
+    b. Efficient: 
+        i) Manacher's Algo - O(n)
+        ii) Expand Around Center: O(n^2) :: this is what we should use.
+        iii) DP - O(n^2) and Space: O(n^2)
+        iv) Brute Force  - O(n^3)
+        v) Recursion - O(2^n)
+
+Z Algo for Pattern Matching: https://www.youtube.com/watch?v=CpZh4eF8QBw&list=PLrmLmBdmIlpvxhscYQdvfFNWU_pdkG5de
+Manacher Algo : https://www.youtube.com/watch?v=V-sEwsca1ak&list=PLrmLmBdmIlpvxhscYQdvfFNWU_pdkG5de&index=2
+

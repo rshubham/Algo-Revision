@@ -1,0 +1,141 @@
+Walmart from LC:
+
+
+2. https://leetcode.com/problems/domino-and-tromino-tiling/
+https://www.geeksforgeeks.org/walmart-interview-experience-for-sde-on-campus-2021-virtual/
+https://www.geeksforgeeks.org/walmart-codehers-interview-experience/
+
+
+
+1. Locking BT Node: https://leetcode.com/discuss/interview-question/1443164/Check-if-the-target-node-can-be-locked
+-----------------------------------------------------------------------------------------------------------------------
+
+Walmart from LC:
+
+class MyTreeNode {
+
+    int val;
+    MyTreeNode left;
+    MyTreeNode right;
+    boolean isLocked;
+
+    MyTreeNode(int val, boolean isLocked){
+        this.val = val;
+        this.isLocked = isLocked;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+        MyTreeNode treeNode = (MyTreeNode) o;
+        return this.val == treeNode.val && this.isLocked == treeNode.isLocked;
+    }
+
+}
+boolean foundFlag = false;
+boolean lockCapability(TreeNode root, TreeNode node, boolean canBeLocked){
+    // exit condition
+    if(root == null || foundFlag || root.isLocked) return false;
+
+    if(root.equals(node) && canBeLocked){
+        foundFlag = true;
+        return canBeLocked;
+    }
+    canBeLocked = lockCapability(root.left, node, canBeLocked & !root.isLocked) || 
+    lockCapability(root.right, node, canBeLocked & !root.isLocked);
+    return canBeLocked;
+}
+
+994. Rotting Oranges
+---------------------------------------------------------------------------
+
+class Solution { 
+
+    class Orange {
+        int row, col, val;
+        Orange(int row, int col, int val){
+            this.row = row; this.col = col; this.val = val;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Orange that = (Orange) o;
+            return (((Orange) o).row == this.row && ((Orange) o).col == this.col);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(row, col, val);
+        }
+
+        @Override
+        public String toString() {
+            return "Orange{" +
+                    "row=" + row +
+                    ", col=" + col +
+                    ", val=" + val +
+                    '}';
+        }
+    }
+
+    /*
+    grid =  [[2,1,1],
+             [1,1,0],
+             [0,1,1]]
+    */
+
+
+   // q = {Orange(0,1,2)} 
+
+     public int orangesRotting(int[][] grid) {
+
+         int countPositives = 0;
+         int rottenCount = 0;
+         int timeElapsed = 0;
+         Queue<Orange> q = new LinkedList<Orange>();
+
+         for(int i = 0; i < grid.length; i++){
+             for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] > 0) countPositives++;
+                if(grid[i][j] == 2) q.add(new Orange(i,j,grid[i][j]));
+             }
+         }
+
+         int[][] directionCheck = new int[][]{
+              {-1,0}, 
+        {0,-1},     {0,1},
+             {1,0}
+         };
+
+        while(true){
+            int count = q.size();
+            int rottenCount += count;
+            if(rottenCount >= countPositives || q.isEmpty()) break; // 7
+
+            // q = {Orange(0,0,2)}
+            while(count > 0){
+                Orange rotten = q.poll();
+                for(int i = 0 ; i < directionCheck.length; i++){
+                    int newRow = rotten.row + directionCheck[i][0];
+                    int newCol = rotten.col + directionCheck[i][1];
+                    if((newRow >= 0 && newRow < grid.length) && (newCol >= 0 && newCol < grid[0].length)){
+                        if(grid[newRow][newCol] == 1){
+                            grid[newRow][newCol] = 2;
+                            q.add(new Orange(newRow,newCol,grid[newRow][newCol]));
+                        }
+                    }
+                }
+                count--;
+            }
+            timeElapsed++;
+        }
+
+        return (rottenCount < countPositive)? -1 : timeElapsed;
+
+     }
+
+
+}

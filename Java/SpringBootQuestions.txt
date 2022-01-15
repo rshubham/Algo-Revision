@@ -1,0 +1,29 @@
+Spring Boot Questions:
+
+
+7. What are some common Spring Boot annotations? (answer)
+Some of the common Spring Boot annotations are @EnableAutoConfiguration, which enables auto-configuration and @SpringBootApplication which combines @Configuration, @ComponentScan, and @EnableAutoConfiguration into one to provide Java configuration, component scanning and enable Spring Boot's auto-configuration features. Both annotations are usually placed in the main class.
+
+8. What does @EnableAutoConfiguration annotation do? (answer)
+The @EnableAutoConfiguration annotation enables auto-configuration in the Spring Boot project. This one line of code literally saves you from writing pages of configurations that would be required otherwise.
+
+9. What is starter dependency in Spring Boot? What is the advantage of it?
+The starter dependency feature of Spring Boot solves the problem of dependency management in your project. For example, if you want to build a Java web application using JPA and Thymeleaf template what are the dependencies you will need?
+
+You not only need to figure out a list of dependencies but also their compatible versions. This can be painful and risky if you don't have much experience. Spring Boot solves this problem by introducing "Starter".
+
+Instead of manually adding a library or specifying in Maven or Gradle build file you specify Starter. Each Starter aggregates common and related dependencies like to develop a Spring MVC based application instead of adding all JAR files you can just specify spring-boot-starter-web starter in your Maven or Gradle build file and it will import Spring MVC Jar and commonly used library like Jackson.
+
+Internally, Starters are nothing but Maven POM that defines transitive dependencies on other libraries that work together to provide some common functionality.
+
+11. What does @SpringBootApplication annotation do?
+This is the main Spring Boot annotation which enables Spring's component-scanning and auto-configuration feature of Spring Boot. Every Spring Boot application which is not using Spring CLI needs this annotation. Internally, @SpringBootApplication is a combination of three annotations:
+
+Spring's @Configuration which enables Spring's Java-based configuration.
+
+Spring's ComponentScan which enables component scanning so that web controller classes and other components you write are automatically discovered and registers as spring beans in ApplicaitonContext.
+
+Spring Boot's @EnableAutoConfiguration which enables the auto-configuration feature of Spring Boot.
+
+The @SpringBootApplication annotation was introduced in Spring Boot 1. 2, which means in older versions you need to annotate your main class with all of these three annotations.
+

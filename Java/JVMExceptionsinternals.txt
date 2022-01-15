@@ -1,0 +1,107 @@
+JVM Exceptions Internals:
+
+1. Non Heap Memory:
+    a. Thread Stack : Each Thread has its own Stack of Frames, which stacked with Methods Calls, Variables etc. along with Program Counter.
+    b. Code Cache
+    c. Perm Generation: Contains Interned Strings/String Constant Pool and Method Area.
+    d. Exception Table
+
+2. Excpetion Table:
+    a. Stored in Perm Gen/MetaSpace
+    b. It is created when a method defines try-catch/finally blocks.
+    c. Table has 4 fields:
+        i) From – Start point
+        ii) To – End point
+        iii) Target – Handler code
+        iv) Type – The exception class
+    d. When an exception is thrown, the JVM would use the exception table to locate its handler.
+    e. If it does not exist, the stack frame would pop and the exception will be rethrown to the calling method according to its stack trace.
+    f. Finally handlers would execute no matter what. No matter which exception is thrown, and even if there was no exception.
+
+
+How to get ByteCode: javap -v sample.class
+
+Code:
+
+  public static void main(String[] args) throws Exception {
+      try {
+          throw new Exception();
+      } catch (Exception e) {
+          System.out.print("Caught!");
+      } finally {
+          System.out.print("Finally!");
+      }
+  }
+
+ByteCode:
+
+     0: new           #17                 // class java/lang/Exception
+     3: dup
+     4: invokespecial #19                 // Method java/lang/Exception."<init>":()V
+     7: athrow
+     8: astore_1
+     9: getstatic     #20                 // Field java/lang/System.out:Ljava/io/PrintStream;
+    12: ldc           #26                 // String Caught!
+    14: invokevirtual #28                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+    17: getstatic     #20                 // Field java/lang/System.out:Ljava/io/PrintStream;
+    20: ldc           #34                 // String Finally!
+    22: invokevirtual #28                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+    25: goto          39
+    28: astore_2
+    29: getstatic     #20                 // Field java/lang/System.out:Ljava/io/PrintStream;
+    32: ldc           #34                 // String Finally!
+    34: invokevirtual #28                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+    37: aload_2
+    38: athrow
+    39: return
+
+Excpetion Table:
+       from    to  target type
+         0     8     8   Class java/lang/Exception
+         0    17    28   any
+
+
+source:
+https://www.overops.com/blog/the-surprising-truth-of-java-exceptions-what-is-really-going-on-under-the-hood/
+
+
+-----------------
+
+Exception Handling:
+
+1. Throwable (Parent for all Exceptions) => a. java.lang.Exception b. java.lang.Error
+2. java.lang.Error Examples: java.lang.StackOverFlowError;  Java.lang.OutOfMemoryError
+3. Exception is mostly used to deal with programming mistakes, non availability of requested resource etc.
+
+Diff Between Checked/UnChecked Exceptions:
+
+1. Checked Exception requires to be handled at compile time using try, catch and finally keywords or else compiler will flag error.
+2. All exceptions derived from java.lang.Exception classes are checked exceptions.
+3. Exception those which extends RuntimeException, these are known as unchecked exception in Java.
+4. UnChecked Exception Example: NullPointerException, ArrayIndexOutOfBoundException
+5. Checked Exception Example: SQLException,IOException, ClassNotFoundException
+
+Best Practices for Exception Handling:
+
+1. Returning boolean instead of returning null to avoid NullPointerException at callers end.
+2. Non empty catch blocks. Empty catch blocks  are considered as one of the bad practices in Exception handling because they just ate Exception without any clue, at bare minimum print stack trace but you should do alternative operation which make sense or defined by requirements.
+3. Prefer Unchecked exception over checked until you have a very good reason of not to do so. it improves readability of
+code by removing boiler plate exception handling code.
+4. Never let your database Exception flowing till client error. since most of application deal with database and SQLException is a checked Exception in Java you should consider handling any database related errors in DAO layer of your application and only returning alternative value or something meaningful RuntimeException which client can understand and take action.
+5. Calling close() methods for connections, statements, and streams on finally block in Java.
+
+Performace Implications of Exceptions:
+
+1. Exceptions are expensive for JVM
+2. Creating Stack Traces requires resources and CPU
+3. JVM requires more efforts to handle a thrown exception than a normal method.
+
+Exception Chaining:
+
+1. Another exception is thrown in response of an exception and creating a chain of Exceptions.
+2. This technique mostly used to wrap a checked exception into an unchecked or RuntimeException.
+3. By the way if you are throwing new exception due to another exception then always include original exception so that handler code can access root cause by using methods like getCause() and initCause().
+
+
+
+-Xmx1024m

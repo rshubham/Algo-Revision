@@ -1,0 +1,171 @@
+
+
+JVM - RAM
+CPU
+l1
+l2
+L3
+RAM 
+
+main
+f(){
+    A object = new A();
+}
+
+
+Object - finalize()
+
+daemon thread => Garbage Collector
+
+Heap  
+object
+Young Gen
+=> Eden Space
+=> Survivor 1
+=> Survivor 2
+
+minor GC
+major GC
+
+Old/Tenured
+
+1:1.5/1:2
+
+-XXmx
+-XXms
+
+Non Heap
+
+Permanent Gen => String pool
+Method Area 
+
+f(){
+    g()
+    f()
+}
+
+
+main
+
+
+
+f() :  3
+f() :  2
+f() :  1
+
+-- Code:
+
+// Program to find best buying and selling days
+import java.util.ArrayList;
+
+// Solution structure
+class Interval {
+	int buy, sell;
+}
+
+enum State {
+    BOUGHT,SOLD;
+}
+// { 100, 180, 260, 310, 40, 535, 695 }
+class StockBuySell {
+    // This function finds the buy sell schedule for maximum profit
+    void stockBuySell(int price[], int n)
+    {
+        int buyingPtr = 0; // i
+        int sellingPtr = 0; // j
+        State currState = State.BOUGHT;
+        int currProfit = price[0]; // 100
+        int maxProfit = 0;
+        while( buyingPtr + 2 < n && sellingPtr + 2 < n){
+            if(currState == State.BOUGHT){
+                // find max
+                int nextDayStockPrice = price[sellingPtr+1]; // 535
+                int next2nextDayStockPrice = price[sellingPtr+2]; // 695
+
+                if(nextDayStockPrice - currProfit < 0 && next2nextDayStockPrice - currProfit < 0) {
+                    currState = State.SOLD;
+                    maxProfit += price[sellingPtr];
+
+                } else if(nextDayStockPrice - currProfit < 0 && next2nextDayStockPrice - currProfit > 0) {
+
+                    currState = State.SOLD;
+                    maxProfit += (price[sellingPtr+2] - currProfit); // 210
+                    sellingPtr += 2; // 3
+                    buyingPtr = sellingPtr; // 3
+
+                } else if(nextDayStockPrice - currProfit > 0 && next2nextDayStockPrice - currProfit < 0) {
+
+                    currState = State.SOLD;
+                    maxProfit += (price[sellingPtr+1] - currProfit); // 210
+                    sellingPtr++; // 3
+                    buyingPtr = sellingPtr; // 3
+
+                } else {
+                    sellingPtr = (nextDayStockPrice > next2nextDayStockPrice)?sellingPtr+1:sellingPtr+2; // 6
+
+                }
+            } else {
+                int nextDayStockPrice = price[sellingPtr+1]; // 40
+                int next2nextDayStockPrice = price[sellingPtr+2]; // 535
+                buyingPtr = (nextDayStockPrice < next2nextDayStockPrice)?buyingPtr+1:buyingPtr+2; // 5
+                currProfit = price[buyingPtr]; // 40
+                sellingPtr = buyingPtr;
+                currState = State.BOUGHT;
+            }
+
+        }
+        if(currState == State.BOUGHT){
+            int nextDayStockPrice = 0;
+            if(sellingPtr+1 < n) nextDayStockPrice = price[sellingPtr+1]; // 535
+            if(nextDayStockPrice > price[sellingPtr]) sellingPtr++;
+            maxProfit += (price[sellingPtr] - currProfit);
+        }
+        System.out.println(maxProfit);
+
+    }
+
+    public static void main(String args[])
+    {
+        StockBuySell stock = new StockBuySell();
+
+        // stock prices on consecutive days
+        int price[] = { 100, 180, 260, 310, 40, 535, 695 }; // (1,4),(5,8)
+        int n = price.length;
+
+        // function call
+        stock.stockBuySell(price, n);
+    }
+}
+
+// Solution Discuss:
+
+bought => search for max, sold => min
+
+i - buying
+j - selling
+
+Random Pattern:
+100, 180, 260, 310, 40, 535, 695
+                    ij  
+
+maxProfit => 160 => 210,-60
+minBuy => 
+
+increasing order:
+1,2,3,....n => increasing order => (1,n);
+
+decreasing order:
+1,2,3,....n => null
+
+
+
+-------------------------------------------
+
+Questions Asked:
+
+1. Discussed about the previous work done using Multithreading - implemented Async Approach and Connection Pool implementation.
+2. Explain JVM Memory Management. - Different heap Spaces used in Java
+3. Difference between OutOfMemoryError and StackOverflow Error
+4. GFG Medium Level Problem: https://www.geeksforgeeks.org/stock-buy-sell/ :: Solved it without taking much help asked to run it in Compiler and then in IntelliJ. Was Facing some issue during the code execution but it ran in the end.
+
+

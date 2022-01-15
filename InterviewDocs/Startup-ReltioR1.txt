@@ -1,0 +1,187 @@
+BlockingQueue - Producer/Consumer
+
+
+   Public class MyBlockingQueue<T> {
+    
+        // Attributes
+         private  Queue<T> queue;
+         private Integer MAX_CAPACITY;
+
+         public MyBlockingQueue(int maxCapacity){
+            this.MAX_CAPACITY = maxCapacity;
+            this.queue = new LinkedList<T>(maxCapacity);
+         }
+
+// behaviors
+	// enqueue
+
+	public void enqueue(T task){
+        int earlierSize = queue.size();
+		synchronized(this){
+			while(queue.size() == MAX_CAPACITY) {
+				this.wait();
+            }
+			queue.add(task);
+			if(earlierSize == 0){
+				this.notifyAll();
+            }
+        }
+    }
+
+	// dequeue
+        
+	public T dequeue(){
+		T polledTask = null;
+		Integer size = queue.size();
+		synchronized(this){
+			if(!queue.isEmpty()){
+				polledTask = queue.poll();
+			if(size == MAX_CAPACITY)
+            notifyAll();
+            }
+            else {
+                this.wait();
+                polledTask = queue.poll();
+            }
+        }
+        return polledTask;
+    }
+}
+
+
+
+BlockingQueue = 4
+
+
+Class Vehicle {
+
+	Tyre tyre;
+		
+
+}
+
+
+Class Tyre {
+
+}
+
+List<String> 
+
+
+
+
+
+List<?> obj  =  new ArrayList<String>();
+List<Object> obj1 =  new ArrayList<String>();
+
+
+1 -> 1
+2 -> 2
+3 -> 4
+
+Fail-Fast - hashmap => ConcurrentModificationException
+Fail-Safe => concurrent hashmap => map -> segments
+
+
+1 4 3 2 
+HashSet and TreeSet 1 4 3 2 => 1 2 3 4
+Set<String> treeSet = new TreeSet<String>(new Comparator(){
+	public int compare(Object o1, Object o2){
+	return (String)o1.compareTo((String) o2);
+}
+});
+
+Tree - Binary Search 
+
+                i
+A1 = {1,3,5,18,19,34,56,78,100,110,120}
+                j
+A2 = {2,3,5,8,10,16,45,66}
+
+Merged = {1,2,3,3,
+
+int [] merged = new int[A1.length + A2.length];
+Merge the sorted arrays to another array which is sorted
+
+i, j, k = 0
+
+
+GET, PATCH, DELETE, POST, PUT, HEAD
+
+A a,b,c,d
+
+List<List<String>> list; // [[“abcd”,”gug”,”kgu”],[“abce”,”gtg”,”kgr”]]
+
+list.forEach()
+
+list.stream().filter();
+List<String>
+
+
+-----------------------------------------------------
+Questions Asked: 
+
+1. OOPs Concepts - Abstraction, Encapsulation, Inheritence, Polymorphism
+2. Diff between Abstract Class and Interface
+3. Implement your custom Blocking Queue - Producer/Consumer
+4. What is Composition and How it is different from Association?
+5. Generics - What benefit do we get from Generics ?
+6. What is Fail-Fast and Fail-Safe in Java ?
+7. Difference between HashSet and TreeSet? Can we store null values in TreeSet?
+8. Merge two arrays and return merged array
+9. HTTP Verbs - What is the difference between PUT and PATCH ?
+10. Using Stream API - merge the List<List<String>> to List<String>
+
+---------------
+Learnings:
+
+1. Read Java Generics
+2. Stream API - merge a List of List - check for the functions.
+
+
+
+-----
+
+CMK, Tools, Scrummaster
+
+
+Queue 1,2,3,4,6 capacity = 5
+enqueue => wait => 
+dequeue => notify
+Queue 1
+dequeue => wait =>
+enqueue => 1 => notify
+
+Threadpool =>SingleThreadPool, Threadpool, ForkJoinPool = Parallel => Task => Task 1, Task 2, Task 3 => Task => return;
+
+
+
+Car => Door, Steering, Engine, Wheels
+RollsRoyce => 
+
+Car car1 = new RollsRoyce();
+car1.door;
+
+RollsRoyce car2 = new RollsRoyce();
+car2.door;
+
+
+
+t2
+
+t1
+RAM
+HashMap 
+1->2
+2->4
+3->5
+
+Async => Sync
+Synch 
+
+
+t1 (Stack) => RAM - Lock{Memory} - Copy(HashMap) => Stack 3-5
+t2 (Stack) => RAM - Wait for Lock to be released => Copy(HashMap) => Stack 3-4
+
+1,2,3,4,5
+

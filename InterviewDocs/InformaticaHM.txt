@@ -1,0 +1,182 @@
+
+
+   Orchestration Tool
+
+   Migration - M&A => 
+   DB => PLSQL => 
+
+    ESS - Import Jobs
+    Web Service
+
+    Project
+    Batches => Batch Types
+
+    => WebService
+    => Java 
+    => Job 
+
+    Key-Value
+
+    ----
+    3 batches
+    Processor
+
+    ----------------------------------
+
+    Project 1..1 Batch
+    Invoker => Orchestrator
+    Batch
+    Batch Type
+    BatchStep => WebService, Java, Job, PLSQL
+    Actions
+    BatchCommand => RunBatch, StopBatch, RunInParallel
+
+    ------------------------------
+
+    User => Project, Batch, 1..n 1. Batch Step => HttpClient  + SpringBoot Rest Template - REST/SOAP https://myendpoint
+        Id: Job
+        id: 
+    Customer Data => Fusion App
+
+    Table => Template => CSV => Binary base64 => Content Man => Content
+    endpoint: WebService -> Server
+
+    JobHistory
+    RU
+
+
+---------------------------
+
+------
+
+paste it here 
+
+   Orchestration Tool
+
+   Migration - M&A => 
+   DB => PLSQL => 
+
+    ESS - Import Jobs
+    Web Service
+
+    Project
+    Batches => Batch Types
+
+    => WebService
+    => Java 
+    => Job 
+
+    Key-Value
+
+    ----
+    3 batches
+    Processor
+
+    ----------------------------------
+
+    Project 1..1 Batch
+    Invoker => Orchestrator
+    Batch
+    Batch Type
+    BatchStep => WebService, Java, Job, PLSQL
+    Actions
+    BatchCommand => RunBatch, StopBatch, RunInParallel
+
+    ------------------------------
+
+    User => Project, Batch, 1..n 1. Batch Step => HttpClient  + SpringBoot Rest Template - REST/SOAP https://myendpoint
+        Id: Job
+        id: 
+    Customer Data => Fusion App
+
+    Table => Template => CSV => Binary base64 => Content Man => Content
+    endpoint: WebService -> Server
+
+    JobHistory
+    RU
+
+
+---------------------------
+
+
+
+
+
+
+-----------------------------------------------------------------------------
+reverse a linked list using recursion
+
+/*
+=>    1 -> 2 -> 3
+
+prevNode p 
+currNode c
+nextNode n
+
+
+currNode.next = prevNode;
+prevNode = currNode
+currNode = nextNode;
+nextNode = nextNode.next;
+
+p = null
+                            head
+                             p      c     n
+       <-     1  <-   2  <-  3 -> null
+                     head
+                     p    c    n
+       1  <-  2  <-  3  null  null
+*/
+
+Node reverse(Node head){
+    if(head == null || head.next == null) return head;
+    Node currNode = head;
+    return reverseUtil(currNode, null, currNode.next);
+}
+
+//abhis method
+Node reverse(Node head){
+    if(head == null || head.next == null) return head;
+    return reverseUtil(head, null, head.next);
+}
+
+
+Node reverseUtil(Node currNode, Node prevNode, Node nextNode){
+    // exit condition
+    if(currNode == null){
+        return prev;
+        //abhis 
+        //return prev;
+    }
+    
+    currNode.next = prevNode;
+    prevNode = currNode
+    currNode = nextNode;
+    if(nextNode != null) nextNode = nextNode.next;
+    
+    return reverseUtil(currNode,prevNode,nextNode); // reverseUtil(1, 3, 2, null)
+}
+
+p s v m(s[] args){
+    Node h = (1->2>3);
+    Node revNode = reverse(h);
+    //WHat is the value of h = ? 3
+    //what is the valur of revNode = ? 3
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

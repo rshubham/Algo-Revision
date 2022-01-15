@@ -1,0 +1,91 @@
+DS Algo
+OOD - Design Patterns - LLD
+Java - JVM/Collections/Multithreading/Generics/GC/String.
+
+SQL/NoSQL => Diff
+SQL - Oracle/mySQL/PostgreSQL
+NoSQL - MongoDB/Cassandra/BigTable/HBase/Voldemort/DynamoDB/CosmosDB MS/ Neo4j/GraphQL
+Caching - Redis/AeroSpyke - Object Storage
+NoSQL - 
+1. Hashing => Key-Value - Document, Cassandra, Redis, AeroSpyke,Voldemort, DynamoDB
+2. Columnar => BigTable/HBase
+3. Graph => Neo4j/GraphQL
+
+
+Design Patterns:
+
+Creational Design Patterns => Singleton, Factory, Abstract Factory, Prototype
+Structural Design Patterns => Composite, Decorator, Adapter, Proxy, Flyweight, Bridge
+Behavioral Design Patterns => Mediator, Observer, Command, Strategy, Visitor, State, Memento, Chain of Responsibility.
+
+
+Request => Filter 1 => Filter 2 => Filter 3 => Application Core Logic => Respond
+
+Request => Approval 1 => Approver 2 => Approver 3 => Request Accept and Provisioned.
+
+TV => Remote Push Button => OnCommand, OffCommand, VolumeUp, VolumeDown => Executor 
+
+
+Subject (ACTIVE/OFF/IDLE/RUNNING) => Observer1 Action Perform
+
+
+UI Draw => Event Publish => Event Listenners => Action
+
+
+
+ATM
+----
+ATM
+Dispensor
+Inventory - Cash
+Validation Mgmt
+User Mgmt
+Card
+Transaction => Bank
+
+Human
+-------
+Hand
+Legs
+Eyes
+Face
+Fingers
+Mouth
+---------
+Walk()
+Eat()
+Talking(Mouth mouth);
+---------
+
+ATM
+Vending Machine
+TV Remote Control
+Call Center - Approval System
+Chat Messaging App
+Messaging Service
+
+
+BatchProcessingSystem
+ConnectionPool
+LoggerFramework
+JMS
+Producer-Consumer => BlockingQueue
+HashMap
+Stack => Queue
+ThreadPool
+
+
+MySQL - Architecture => InnoDB/MariaDB
+Indexing MySQL/PostgreSQL
+Apache: Kafka/Storm/Camel/Flink/Hadoop/Spark
+
+Microservices- API Gateway/LB/Reverse proxy/ Service Mesh/...
+Cloud Computing - Networking - OSI Model - DNS, CDN, TCP/IP 3 way hand shake, HTTP/HTTPS
+www.oracle.com => 
+
+Inter-Application Communication:
+REST - Stateless
+SOAP 
+RPC
+GraphQL
+WebSocket - Stateful

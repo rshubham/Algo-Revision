@@ -1,0 +1,167 @@
+
+
+try {
+   //
+} catch (Exception e){
+  throw new Exception();
+} finally{
+    //
+}
+
+f f1 f2 f3 f4
+
+static - overload
+runtime - inheritence-  overriding
+
+abstract class {
+
+abstract f()
+
+f1(){
+
+}
+
+} 
+
+interface doable {
+
+}
+
+String str = "abc";
+String str1 = new String("abc");
+
+StringBuilder / StringBuffer
+
+Comparator {
+    compare(Object o1, Object o2){
+
+    }
+}  
+Comparable {
+    compareTo(Object o)
+}
+
+jagged array
+
+Dynamic Method Dispatcher
+
+class MyObject<T,K>{
+    Object x;
+    Object y;
+    T x;
+
+}
+
+
+Young Gen
+Survivor 1
+Survivor 2
+Permanent
+
+major
+minor
+mark-sweep - serial/parallel
+
+public class A  implements C {
+
+    f(myObject myObject) :: 
+
+    MyObject obj = new MyObject();
+
+
+
+
+    class B {
+
+    }
+}
+
+
+f(new C({
+
+})
+
+
+
+Count the number of words in the Strings
+
+"Young Gen Survivor 1 Survivor 2 Permanent"
+
+int countWords(String s){
+    if(s == null || s.isEmpty()) return 0;
+    String[] words = s.split(' '); // [Young,Gen,Survivor,1,Survivor,2,Permanent]
+    Set<String> set = new HashSet<String>();
+    for(String word : words){
+        set.add(word);
+    }
+    return set.size();
+}
+Young -> 1
+Gen -> 1
+Survivor -> 2
+
+
+int countIndividualWords(String s, String word){
+    if(s == null || s.isEmpty()) return 0;
+    String[] words = s.split(' '); // [Young,Gen,Survivor,1,Survivor,2,Permanent]
+    Map<String,Integer> map = new HashMap<String,Integer>();
+    for(String word : words){
+        if(map.containsKey(word)){
+            map.put(word,map.get(word)+1);
+        } else {
+            map.put(word,1);
+        }
+    }
+    return map.get(word);
+}
+
+
+
+
+
+CREATE TABLE hive_ustx_dd_delete_blaze_mode(
+    id small1int,
+    col_int int,col_bigint bigint,col_double double,col_dec18 decimal(18,0),col_dec28 decimal(28,0),col_dec38 decimal(38,0),col_dec3810 decimal(38,10),col_dec3838 decimal(38,38),col_str varchar(50),col_date31 date,col_timestamp timestamp,col_char char(20),col_tiny tinyint) COMMENT 'hive_ustx_dd_delete_blaze_99mode' CLUSTERED BY (col_char) INTO 5 BUCKETS STORED AS ORC TBL1PROPERTIES ('transactional'='true');
+
+
+String -> Character Array
+
+f(String s){
+    byte[] asciiValues = s.getBytes();
+}
+
+
+Pattern p = new Pattern("//0-9")
+s.match(p);
+
+EDC 
+SaaS
+------------------------------------------------------------------------------------------------------------------------------------
+
+Questions Asked:
+
+0. Describe the Most challenging problems - you have solved in your work experience till now.
+=> 1. Improved Performance by implementing Async logic in the outbound calls in Banking Application.
+=> 2. Connecting with Legacy MOS DB using VM instance residing in OCI overcoming security/approval shortcomings.
+1. Exception vs Error - differences
+2. Exception Handling and how JVM handles Exceptions in Java
+3. Checked/Unchecked Exceptions with Examples
+4. Internal Working of JVM - what does it do when an Exception in thrown
+5. Finally Block
+6. Array Store Exception ?
+7. What is Dynamic Method Dispatcher ?
+8. How Polymorphism is acheived in Java ?
+9. Abstract Classes vs Interfaces with Example
+10. String Constant Pool ?
+11. How mutability is acheived in String ?
+12. Comparable vs Comparator
+13. Jagged Arrays ?
+14. Generics - why do we use Generics in Java as everything is Object
+15. Garbage Collector - Type/Algo used
+16. Inner Class and Annonymous Classes in Java 
+17. Problem Solving: Count the Word's frequency in a String ?
+=> First he asked for the Count of all the words - for I gave solution using set, then he was not satisfied and I asked him do he want the frequency of all the words ? - Then I gave him the Map solution.
+18. Problem Solving: Find the Sum of the numbers appearing in a String without traversing the String by Character.
+=> I gave String traversal approach - using Char Array which he asked me to Optimize - do it without traversing it Character by Character. For this, I gave him Regex approach, but I was not familiar with the syntax.
+
+

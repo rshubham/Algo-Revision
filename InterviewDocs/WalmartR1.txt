@@ -1,0 +1,296 @@
+
+/*
+          1
+       /     \
+     2        3
+   /    \   /   \
+  4     5   6    7
+    \
+      8
+
+        int postOrderIndex = postOrder.length-1;
+
+        TreeNode createBinaryTree(int leftIndex, int rightIndex){
+
+            if(leftIndex > rightIndex) return null;
+
+            TreeNode node = new TreeNode(postOrder[postOrderIndex]);
+            postOrderIndex--;
+
+            int rootIndex = search postOrder Element in inOrder - leftIndex to rightIndex - n // 4 => O(1)
+
+
+            node.right = createBinaryTree(rootIndex+1,rightIndex);
+            node.left = createBinaryTree(leftIndex,rootIndex-1);
+
+            return node;
+        }
+
+    l    r    n
+O(2n), O(n)
+
+
+      InOrder: 4,8,2,5,1,6,3,7
+      PostOrder : 8,4,5,2,6,7,3,1
+
+      8 => 1
+      7 => 7
+      3 => 6
+
+      0,1,2,3,4,5,6,7
+      4,8,2,5,1,6,3,7
+      
+      1 => 4
+      
+
+
+     Write a Program , Input: InOrder, PostOrder Arrays.
+     Construct a Binary Tree for these 2 Arrays.
+
+    4,8,2,5,1,6,3,7
+
+    8,4,5,2,6,7,3,1
+
+    ------------
+
+    InOrder: 4,8,2,5,   6,3,7
+
+
+    PostOrder: 8,4,5,2,  6,7,3
+
+    ------------
+
+    InOrder:   6,3,7
+
+
+    PostOrder: 6,7,3
+
+    ------------
+
+    InOrder:   6,   7
+
+
+    PostOrder: 6,   7
+
+    ------------
+
+    InOrder:   6,   7
+
+
+    PostOrder: 6,   7
+
+
+
+
+1,
+
+Prblm 2:
+
+
+           rr[][C] = { {2, 1, 0, 2, 1},
+                       {1, 0, 1, 2, 1},
+                       {1, 0, 0, 2, 1}
+                     };
+                     
+           1 -> Good Egg
+           2 -> Rotten Egg :: It will spoil surrounding eggs in 8 directions.
+           0 -> Empty
+           
+           Find min number of days
+           Not Possible to rot -1
+           
+           
+                       {2, 1, 0, 2, 1},
+                       {1, 0, 1, 2, 1},
+                       {1, 0, 0, 2, 1}    
+                       
+                       {2, 2, 0, 2, 2},
+                       {2, 0, 2, 2, 2},
+                       {1, 0, 0, 2, 2}
+                       
+                       {2, 2, 0, 2, 2},
+                       {2, 0, 2, 2, 2},
+                       {2, 0, 0, 2, 2}
+                       
+                       2
+                       
+                       {2, 1, 0, 2, 1},
+                       {0, 0, 1, 2, 1},
+                       {1, 0, 0, 2, 1}   
+                       
+                       
+                       
+                       {2, 1, 0, 2, 1},
+                       {0, 0, 1, 2, 1},
+                       {1, 0, 0, 2, 1}  
+                       
+                       
+                       {2, 1, 1, 2, 1},
+                       {1, 1, 1, 2, 1},
+                       {1, 1, 1, 2, 1}  
+                       
+                       
+                       3
+                       
+            class Egg{
+                int r, int c, int val;
+            }
+            int countPositives = 0;
+            for(i -> m){
+                for(j->n){
+                
+                    if(eggs[i][j] == 2)
+                    queue.add(new Egg(i,j,2));
+                   if(eggs[i][j] > 0) countPositives++;
+                    
+                }
+            } - mn
+            
+            Queue<Egg> => {Egg(0,0,2), ..}
+            int daysPassed = 0;
+            
+            // 4
+            while(!queue.isEmpty()){
+            
+                int rottenEggsInADay = queue.size();
+                countPositives -=  rottenEggsInADay;
+     
+            
+                while(rottenEggsInADay > 0){
+                
+                    Egg egg = queue.poll();
+                    // q add()
+                
+                    rottenEggsInADay--;
+                }
+                daysPassed++;
+                
+            } - mn
+            
+            if(countPositive > 0) return -1;
+            else return daysPassed;
+            
+            
+            time - 2mn
+            
+            
+            
+            
+            
+            
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*
+*
+*
+*
+* */
+
+
+
+public class Problem1 {
+
+
+        class TreeNode {
+
+            int val;
+            TreeNode left;
+            TreeNode right;
+
+            TreeNode(int val){this.val = val;}
+
+        }
+
+
+        public TreeNode constructBT(int[] inOrder, int[] postOrder){
+
+            int postOrderIndex = postOrder.length-1;
+            int inOrderIndex = -1;
+            for(int i = 0; i < inOrder.length; i++){
+                if(inOrder[i] == postOrder[postOrderIndex]){
+                    inOrderIndex = i;
+                }
+            }
+            return util(inOrder,postOrder,inOrderIndex,postOrderIndex,null);
+        }
+
+        private TreeNode util(int[] inOrder, int[] postOrder, int inOrderIndex, int postOrderIndex, TreeNode root){
+
+
+            if(root == null){
+                root = new TreeNode(postOrder[postOrderIndex]);
+            }
+
+            // search inOrder
+            int[] lstInOrder = new int[inOrderIndex];
+            int[] rstPostOrder = new int[inOrder.length - inOrderIndex];
+            /*for(int i = 0; i < inOrder.length; i++){
+
+                if(i < inOrderIndex){
+                    lstInOrder[i] = inOrder[i];
+                }
+                if(i < inOrderIndex){
+                    lstInOrder[i] = inOrder[i];
+                }
+
+            }*/
+            // copy(Inorder) to lstInOrder,rstInOrder
+            int[] lstPostOrder = new int[inOrderIndex];
+            int[] rstPostOrder = new int[inOrder.length - inOrderIndex];
+            // copy(Inorder) to lstPostOrder,rstPostOrder
+            int lstPostOrderIndex = lstPostOrder.length-1;
+            int lstInOrderIndex = -1;
+            for(int i = 0; i < lstInOrder.length; i++){
+                if(lstInOrder[i] == lstPostOrder[lstPostOrderIndex]){
+                    lstInOrderIndex = i;
+                }
+            }
+
+            root.left = util(lstInOrder,lstPostOrder,lstInOrderIndex,lstPostOrder.length-1,root);
+
+            // copy(Inorder) to lstInOrder,rstInOrder
+            int[] rstPostOrder = new int[inOrderIndex];
+            int[] rstPostOrder = new int[inOrder.length - inOrderIndex];
+            // copy(Inorder) to lstPostOrder,rstPostOrder
+            int lstPostOrderIndex = lstPostOrder.length-1;
+            int lstInOrderIndex = -1;
+            for(int i = 0; i < lstInOrder.length; i++){
+                if(lstInOrder[i] == lstPostOrder[lstPostOrderIndex]){
+                    lstInOrderIndex = i;
+                }
+            }
+            root.right = util(rstInOrder,rstPostOrder,rstInOrderIndex,rstPostOrder.length-1,root);
+
+            return root;
+
+        }
+
+        private int getInOrderValue(int[] inOrder, int rootValue){
+
+        }
+
+
+
+
+}
+
+----------------
+
+Questions Asked:
+
+1. Construct a Binary Tree using InOrder and PostOrder Traversals.
+2. LC Medium : Rotten Eggs Problem, Find the min days in which all the Eggs will be rotten. 
