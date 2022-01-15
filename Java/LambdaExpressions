@@ -1,0 +1,106 @@
+Lambda Expressions in Java:
+
+Why Lambda ?:
+1. It enables - functional programming in java.
+2. Readable and concise code. : It eliminates the boiler plate code.
+3. Easier to use APIs and libraries.
+4. Enables support for parallel processing.
+
+Functional vs OOP:
+Suppose I have a requirement to use just a normal function or logic which is independent of any other object/class. So, I need to create an object/class and encapsulate my method as its behavior and then only we can use it.
+    a. Everything is an object
+    b. All code blocks are associated with classes/objects.
+
+Lambda Expressions:
+
+Defining a Lambda: Lambda's are basically built to make the things concise and remove excessive code + making enable the functional programming in java. So, we have to replace a function with a lambda which will remove the unneccessary code from the method declaration. Say, we have a method called computeStringLength as below:
+
+Regular Method declaration:
+
+    public int computeStringLength(String string) {
+        return string.length();
+    }
+
+Using Lambda:
+    1. remove : access modifier i.e. public/private/protected as this is relevant only in the class context.
+    2. remove : name of the method as we're already specifying a name for the lambda expression. So, we don't require the method name.
+    3. remove : return type of the method - Compiler is intelligent enough to read the code inside the function and identify the return type.
+    4. what is left ?
+    This is the lambda expression for the above function.
+    (String string) {
+        return string.length();
+    }
+    let's name it:
+    stringLambda = (String string) { return string.length();}
+
+    if we have only single line of code in the method then we can remove the "{}" as well.
+
+    stringLambda = (String string) return string.length();
+
+    Now, we have to add a symbol to identify this as lambda i.e. '->' (this is symbol used for Stream API). So, our expression is:
+    stringLambda = (String string) -> return string.length();
+
+    if the single line of code then we can remove the 'return' keyword as well.
+    stringLambda = (String string) -> string.length();
+
+    Now, What is the Type of the reference stringLambda ?
+    We need to define a type using a Functional Interface, either we can use an existing Interface or we can create a new Functional Interface. So, what is a Functional Interface ?
+    Its an interface through which Java identifies the return type and argument types (or we can infer the types in a lambda expression) and this interface must have only one method definition. As, the compiler is infering the type of the lambda - it'll go the interface and check for the method decalaration in the interface - if there are multiple methods defined then it'll give error. Let's define our own functional interface:
+
+    interface IStringLength {
+        int func(String string);
+    }
+
+    The method signature inside a functional interface should match with the lambda expression.
+
+    IStringLength stringLambda = (String string) -> string.length();
+
+    One more thing, which we can remove from this is the Argument Type - as the types are being inferred from the functional interface then we don't need to mention the type of the arguments in the lambda expression.
+
+    IStringLength stringLambda = (string) -> string.length();
+
+    Now, if we have only one argument then we can remove the braces as well.
+
+    IStringLength stringLambda = string -> string.length();
+
+    This is the most compact form of a lambda expression we can acheive.
+
+    Suppose we have a method somewhere in our repo, which takes the MylambdaType as an argument like below:
+
+    String convertIntegerToStringValue(IStringLength stringLength){
+        return stringLength.func("Calculate String Length") + "";
+    }
+
+Implementation of above discussion in Java:
+------------------------------------------------------------------------------------------
+class definition:
+------------------------------------------------------------------------------------------
+public class TestLambda {
+
+    public static void main(String[] args){
+
+        IStringLength stringLambda = string -> string.length();
+        //System.out.print(convertIntegerToStringValue(stringLambda));
+        System.out.print(convertIntegerToStringValue(string -> string.length()));
+    }
+
+    static String convertIntegerToStringValue(IStringLength stringLength){
+        return stringLength.func("Calculate String Length") + "";
+    }
+
+}
+
+interface IStringLength { int func(String string);}
+------------------------------------------------------------------------------------------
+console output:
+------------------------------------------------------------------------------------------
+23 
+------------------------------------------------------------------------------------------
+
+Why chose interface to define the type ?
+
+The most important reason is Backward Compatibility. Suppose we have a new function type created in java, if we use that fucntion type and implement a lambda in a library then we need to make that library to accept lambda and re-write the library again. The advantage of using an interface is that we can use the lambda in place of all those annonymous classes 
+
+
+Runnable using Lambda:
+
