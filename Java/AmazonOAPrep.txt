@@ -1,0 +1,448 @@
+
+Amazon OA Prep:
+
+latest:
+https://leetcode.com/discuss/interview-question?currentPage=1&orderBy=newest_to_oldest&query=&tag=amazon-online-assesment
+
+next:
+1. https://leetcode.com/discuss/interview-question/1702654/Amazon-or-OA-or-Final-State
+2. https://leetcode.com/discuss/interview-question/1692516/Amazon-OA1-full-time-question-Jan-2022
+3. https://leetcode.com/discuss/interview-question/1601392/Amazon-or-OA-or-Min-changes-to-get-non-decreasing-array
+4. https://leetcode.com/discuss/interview-question/1599355/Amazon-or-Does-this-question-exist-on-LeetCode
+5. https://leetcode.com/discuss/interview-question/1581646/Amazon-or-OA-or-Order-Logs-and-Optimal-Utilization-of-Memory-Space
+6. https://leetcode.com/discuss/interview-question/1527679/Amazon-OA-password-strength
+7. https://leetcode.com/discuss/interview-question/1527667/Amazon-OA-Stress-Test-the-server-channels
+8. https://leetcode.com/discuss/interview-question/1521767/Amazon-OA-SDE1
+9. https://leetcode.com/discuss/interview-question/1332293/Return-the-number-of-substrings-that-contain-balanced-string
+10. https://leetcode.com/discuss/interview-question/1312818/Amazon-OA-Result-(India-2021-Grads)
+11. https://leetcode.com/discuss/interview-question/1013739/Amazon-OA-or-Reject-or-New-grad-position
+12. https://leetcode.com/discuss/interview-question/1010782/Amazon-New-Grad-OA
+13. https://leetcode.com/discuss/interview-question/935623/Amazon-Online-Assessment-test-for-SDE
+14. https://leetcode.com/discuss/interview-question/781367/Amazon-OA-2020-Truck-popups
+15. https://leetcode.com/discuss/interview-question/538088/Amazon-or-OA-2019-or-Top-N-Buzzwords
+
+
+----------------------------------------------------------------------
+
+1.
+ou are given 3 inputs
+
+    int: teamSize:: representing the number of engineers to complete a team, otherwise the team does not count towards total
+
+        1 <= teamSize <= 10^4 unsure about constraint
+
+    int: maxDiff:: representing the maximum allowed gap in skill between the least skilled engineer on a team and the most skilled on the team
+
+        1 <= maxDiff <= 100 unsure about constraint
+
+    array[int]: skill:: representing the pool of engineers to build teams from, skill[i] being the skill level an engineer i
+
+        1 <= pool of enginers <= 10^4 unsure about constraint
+        1 <= skill[i] <= 100 unsure about constraint
+
+what is the maximum number of teams that can be constructed from the pool of engineers, respecting the maxDiff rule for each team?
+
+Example1:
+input: teamSize: 1, maxDiff: 1, skill: [34, 5, 72, 48, 15, 2]
+output: 6 ---> (resulting teams [[2], [5], [15], [34], [48], [72]])
+
+Example2:
+input: teamSize: 3, maxDiff: 20, skill: [34, 5, 72, 48, 15, 2]
+output: 1 ---> (resulting teams [[2, 5, 15]])
+
+Example3:
+input: teamSize: 3, maxDiff: 30, skill: [34, 5, 72, 48, 15, 2]
+output: 2 ---> (resulting teams [[2, 5, 15], [34, 48, 72]])
+
+Example4:
+input: teamSize: 3, maxDiff: 5, skill: [34, 5, 72, 48, 15, 2]
+output: 0 ---> (resulting teams [])
+
+Example5:
+input: teamSize: 3, maxDiff: 25, skill: [1, 7, 18, 32, 65, 72, 90, 98, 100, 113, 146]
+output: 3 ---> (resulting teams [[7, 18, 32], [65, 72, 90], [98, 100, 113]])
+
+[1, 7, 18, 32, 65, 72, 90, 98, 100, 113, 146]
+
+      0     1      2      3     4      5      6       7       8      9       10
+      1,    7,    18,    26,    65,    72,    90,    98,    100,    113,    146
+                                                                             i
+                                                                             j
+
+min = 98
+max = 113
+
+1,7,18; 65,72,90; 98,100,113
+  0       1        2        3        4       5
+[34,      5,      72,      48,      15,      2]
+
+ 2,      5,       15,      34,      48,      72
+
+                                                 i
+                                                 j
+
+min = 34
+max = 48
+
+
+2,5,15; 
+
+core logic:
+
+int i = 0, j = 0, min = a[i], max = a[j];
+while(max-min<=maxDiff && j-i+1 < ts){
+    if(j-i+1 == ts) {
+        Syso a[i] to a[j];
+        j++;
+        i = j;
+        min = a[i];
+        max = a[j];
+    }
+    max = a[j];
+    j++;
+}
+--------------------------------------------
+1383. Maximum Performance of a Team
+
+You are given two integers n and k and two integer arrays speed and efficiency both of length n. There are n engineers numbered from 1 to n. speed[i] and efficiency[i] represent the speed and efficiency of the ith engineer respectively.
+
+Choose at most k different engineers out of the n engineers to form a team with the maximum performance.
+
+The performance of a team is the sum of their engineers' speeds multiplied by the minimum efficiency among their engineers.
+
+Return the maximum performance of this team. Since the answer can be a huge number, return it modulo 109 + 7.
+
+ 
+
+Example 1:
+
+Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
+Output: 60
+Explanation: 
+We have the maximum performance of the team by selecting engineer 2 (with speed=10 and efficiency=4) and engineer 5 (with speed=5 and efficiency=7). That is, performance = (10 + 5) * min(4, 7) = 60.
+Example 2:
+
+Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 3
+Output: 68
+Explanation:
+This is the same example as the first but k = 3. We can select engineer 1, engineer 2 and engineer 5 to get the maximum performance of the team. That is, performance = (2 + 10 + 5) * min(5, 4, 7) = 68.
+Example 3:
+
+Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 4
+Output: 72
+
+
+--------------------------------
+
+Input: n = 6, speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
+
+performance of team = sum(engineer's speed) * min(efficiency);
+
+maxPerformance with at most k diff engg, k = 2,1;
+
+-------------------------------------------------
+speed      =  2     10     3     1     5     8
+efficiency =  5      4     3     9     7     2
+-------------------------------------------------
+speed      =  8      3    10     2     5     1
+efficiency =  2      3     4     5     7     9
+-------------------------------------------------
+-------------------------------------------------
+perf       =  16    22    39    48    35    42
+-------------------------------------------------
+speed      =  10     8     5     3     2     1
+efficiency =   4     2     7     3     5     9
+-------------------------------------------------
+-------------------------------------------------
+perf       =  40    36    26    56    15    15
+-------------------------------------------------
+https://leetcode.com/problems/maximum-performance-of-a-team/
+-------------------------------------------------------------------------------------------
+
+Building - router problem:
+
+Building:      1     2     3     4     5     6
+
+Router j installed at a certain building location can only provide Internet
+to the buildings in the range [(i - routerRangeLin, (i+ routerRangelin] inclusive, where routerRangeli) is
+the range parameter of router j. 
+
+    i = 3
+    1,2
+    3 - 1, 3 + 2
+    2,5
+
+
+A building is considered to be served if the number of routers providing Internet to the building is greater than or equal to the number of people living in it.
+
+Example
+buildingCount = [1, 2, 1, 2, 2]
+routerLocation = [3, 1]
+routerRange = [1, 2]
+There are 5 buildings with tenant counts shown in buildingCount. Routers are located in buildings 3
+and 1 with ranges 1 and 2 as shown in
+                     1     2     3     4     5
+building        =    0     1     2     3     4
+buildingCount   =    1     2     1     2     2
+routerLocation  =    r1
+                                r2
+                          r1       
+                          r2          r2
+routerCount     =    1     2     1      1     0
+
+
+
+1 - 1, 1 + 2
+0,3
+
+3-1,3+2
+2,5
+
+-------------------------------------------
+
+Range Addition - 903 lintcode
+Assume you have an array of length n initialized with all 0's and are given k update operations.
+
+Each operation is represented as a triplet: [startIndex, endIndex, inc] which increments each element of subarray A[startIndex ... endIndex] (startIndex and endIndex inclusive) with inc.
+
+Return the modified array after all k operations were executed.
+
+Given:
+length = 5,
+updates = 
+[
+[1,  3,  2],
+[2,  4,  3],
+[0,  2, -2]
+]
+return [-2, 0, 3, 5, 3]
+
+Explanation:
+Initial state:
+[ 0, 0, 0, 0, 0 ]
+After applying operation [1, 3, 2]:
+[ 0, 2, 2, 2, 0 ]
+After applying operation [2, 4, 3]:
+[ 0, 2, 5, 5, 3 ]
+After applying operation [0, 2, -2]:
+[-2, 0, 3, 5, 3 ]
+
+
+public int[] getModifiedArray(int length, int[][] updates) {
+        if(length == 0 || updates == null || updates.length == 0) return null;
+        int[] a = new int[length];
+        for(int x = 0; x < updates.length; x++){
+            int start = updates[x][0], end = updates[x][1], inc = updates[x][2];
+            if(start >= 0 && start < length) a[start] += inc;
+            if(end+1 < length && end+1 >= 0) a[end+1] -= inc;
+            
+        }
+        // prefix sum
+        for(int i = 0; i < length; i++){
+            if(i == 0) continue;
+            a[i] += a[i-1];
+        }   
+        return a;
+
+    }
+
+[1,  3,  2], 
+[2,  4,  3],
+[0,  2, -2]
+
+
+[ 0, 2, 0, 0, -2 ]
+[ 0, 2, 3, 0, -2 ]
+
+[ -2, 2, 3, 2, -2 ]
+
+[-2,0,3,5,3]
+
+----------------------------------------------------------
+
+
+
+Given a list of process with process id and memory requirement, 
+these process are seprated into two lists foregroundProcess List and backgroundProcess list . 
+Ex : int[][] fg = {{1,3},{2,2},{3,3},{4,5}} , int[][] bg = {{1,6},{2,3},{3,4}}. Along with this, deviceMemory is given. Find the pairs of foreground and background process which use the memory of device optimally i.e., fg[i][1] + bg[i][1] <= deviceMemory.
+
+int[][] fg = {{1,3},{2,2},{3,3},{4,5}}
+int[][] bg = {{1,6},{2,3},{3,4}}
+
+-------------------------------------------
+-------
+fgMap
+-------
+1 -> 3
+2 -> 2
+3 -> 3
+4 -> 5
+-------
+bgMap
+-------
+1 -> 6
+2 -> 3
+3 -> 4
+-------
+
+fgMap.get(i) + bgMap.get(i) <= deviceMemory
+
+---------------------------------------
+   0         1       3       4        5
+[ -1,       -1,      1,      1,      -1]
+   i
+             j
+
+-1 -> 1
+ 1 -> 2
+
+  0        1         2        3        4         5
+ -1        1        -1       -1        1         1
+           i
+                                                      j
+maxGlobal = 1
+maxLocal = 1
+
+---------------------------------
+
+Kadane's Algo:
+
+    // Simple Kadane's Algo
+    int largestContigousSubarray(int[] a){
+        if(a == null || a.length == 0) return 0;
+        maxLocal = 0, maxGlobal = Integer.MIN_VALUE, i = 0;
+        while(i < N){
+            int maxLocal += a[i];
+            maxLocal = (maxLocal < a[i]) ? a[i] : maxLocal;
+            maxGlobal = (maxGlobal < maxLocal) ? maxLocal : maxGlobal;
+        }
+        return maxGlobal;
+    }
+
+    // track subarray
+    int[] largestContigousSubarray(int[] a){
+        if(a == null || a.length == 0) return null;
+        maxLocal = 0, maxGlobal = Integer.MIN_VALUE, i = 0, j = 0;
+        while(j < N){
+            int maxLocal += a[j];
+            if(maxLocal < a[j]){
+                maxLocal = a[j];
+                i = j;
+            }
+            maxGlobal = (maxGlobal < maxLocal) ? maxLocal : maxGlobal;
+        }
+        return new int[]{i,j};
+    }
+
+--------------------------------------
+ j  j
+-2,-3,4,-1,-2,1,5,-3
+maxProduct | minProduct
+    1      |    1
+    -2     |    -2
+    6      |    -3
+   24      |    -12
+   12      |    -24
+   48      |    -24
+   48      |    -24
+  240      |    -120
+ 360       |    -
+
+int maxProductSubArray(int[] a){
+    int minProd = 1, maxProd = 1, maxProdGlobal = 1;
+    for(int x : a){
+        if(x == 0){
+            minProd = 1;
+            maxProd = 1;
+            continue;
+        }
+        maxProd = Math.max(maxProd*x, Math.max(minProd*x, x));
+        maxProdGlobal = maxProd;
+        minProd = Math.min(maxProd*x, Math.min(minProd*x, x));
+    }
+    return maxProd;
+}
+
+-------------
+
+MaxProduct Subarray: 
+180
+Array: 
+0   1      2   3     4
+6  -3    -10   0     2 
+Max Prod Array: 
+6  -3    180   2     0 
+Min Prod Array: 
+6  -18  1800   2     0  
+
+---------------------------
+
+good
+
+0000
+1 -  0001 = d
+2 - 0010 = o
+3 - 0011 = od
+4 - 0100 = o
+5 - 0101 = -
+6 - 0110 = oo
+7 - 0111 = ood
+8 - 1000 = g
+9 - 1001 = -
+10 - 1010 = -
+11 - 1011 = -
+12 - 1100 = go
+13 - 1101 = -
+14 - 1110 = goo
+15 - 1111 = good
+---------------------------
+
+(2^n - 1) & ( 0 << i)
+
+s = "good";
+char[] chars = s.toCharArray();
+int n = chars.length;
+for(int i = 0; i < Math.pow(2,n); i++){
+    StringBuilder sb = new StringBuilder();
+    for(int j = 0; j < n; j++){
+        if(i & (1 << j) > 0){
+            sb.append(""+chars[j]);
+        }
+    }
+    System.out.println(sb.toString());
+}
+--------------
+
+
+i = 0001
+j = 0000
+
+1 << j => 1 << 0 => 2
+0010 && 0001 => 0
+
+
+Imbalance Shipment Problem: / https://leetcode.com/problems/sum-of-subarray-ranges/
+-----------------------------------------
+
+The above question basically boils down to finding the difference of max and min element of each subarray and summing them up over all subarrays.
+
+Instead of finding all subarrays and then getting its min and max, we can look at the inverse problem, i.e, for how many subarrays will the current element be the max or the min.
+Suppose we focus on how to find the solution to number of subarrays for which current element is max. We can say that the left side of such a subarray can only go upto that element where value is less than current element. Hence it reduces to finding the next greater element to the the right and left.
+Let these indices be L and R respectively and current element index be i.
+Then list[i] is max for all subarrays whose starting index lies in range (L, i] and ending index in range [i, R).
+Number of such subarrays = ways to choose start index * ways to choose end index.
+contribution of list[i] when it is max = (i-L) * (R-i) * list[i].
+Similarly we can find list[i] contribution when it is minimum by finding next element which is smaller.
+then we sum up all contributions for max and subtract summed up contributions when it is min. to find the answer.
+
+Note : the next greater and smaller element is a common stack based question. Can be calculated for all indexes in O(n)
+
+Overall TC will be O(n), space O(n);
+
+0       1       2       3       4       5
+3       2       1       4       2       3
+
+
+
+
+

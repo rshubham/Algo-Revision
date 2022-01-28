@@ -252,3 +252,15 @@ SE => 19-20
 --------------
 Core - Java/Multithreading => SE
 --------------
+
+
+------------
+
+Amazon Asked:
+
+1. Clone a Graph
+2. Graph ADT - Create a Custom Graph implementation
+3. Hotel/Restaurant Booking Mgmt System - LLD
+4. Leadership Principle, Customer Obsession - situation based.
+5. Project discussion.
+

@@ -1,0 +1,108 @@
+        
+        
+Stream API - Collectors.collect implementations:
+        
+        List<String> list = Arrays.asList("a", "bb", "ccc", "dd","bb");
+
+        list.stream().collect(Collectors.toList());
+
+        Set<String> set = list.stream().collect(Collectors.toSet());
+
+        System.out.println(set.add("b"));
+        System.out.println(set.add("b"));
+
+        /*true
+        false
+        */
+
+        Set<String> treeSet = list.stream().collect(Collectors.toCollection(TreeSet::new));
+        treeSet.forEach(System.out::println);
+        /*
+        a
+        bb
+        ccc
+        dd
+        */
+        
+        // Converting List to Map:
+        Map<String,Integer> map = list.stream().collect(Collectors.toMap(Function.identity(), String::length, (x,y) -> x));
+        map.forEach((k,v) -> System.out.print(k + " : " + v + "\n"));
+        /*
+        dd : 2
+        bb : 2
+        a : 1
+        ccc : 3
+        */
+        
+        // Collecting and Then
+        list.stream().collect(Collectors.collectingAndThen(Collectors.toList(), LinkedList::new));
+        
+        
+        
+        // joining
+        String joined = list.stream().collect(Collectors.joining(" "));
+        System.out.print(joined+"\n");
+        /*
+        a bb ccc dd bb
+        */
+
+        //joining
+        String joined1 = list.stream().collect(Collectors.joining(" ","PRE","POST"));
+        System.out.print(joined1+"\n");
+        /*
+        PREa bb ccc dd bbPOST
+        */
+
+        //COUNTING
+        Long result = list.stream().collect(Collectors.counting());
+        System.out.print(result+"\n");
+        System.out.print(list.size()+"\n");
+        /*
+          5
+          5
+        */
+
+        //Summarizing Double
+        DoubleSummaryStatistics stats = list.stream().collect(Collectors.summarizingDouble(String::length));
+        System.out.println(stats.toString());
+        /*DoubleSummaryStatistics{count=5, sum=10.000000, min=1.000000, average=2.000000, max=3.000000}*/
+
+        // Grouping By 
+        Map<Integer,Set<String>> m = list.stream().collect(Collectors.groupingBy(String::length,Collectors.toSet()));
+        m.forEach((k,v) -> System.out.print(k + " : "+ v + "\n"));
+        /*
+        1 : [a]
+        2 : [bb, dd]
+        3 : [ccc]
+        */
+
+
+        // Stream API
+
+        Stream<String> stream = Stream.empty();
+    // We often use the empty() method upon creation to avoid returning null for streams with no element:
+
+        Collection<String> c = Arrays.asList("a", "b", "c");
+        Stream<String> stream1 = c.stream();
+
+        Stream.<String>builder().add("aa").add("bb").add("ccc").build();
+
+        System.out.println("Stream Generator : ");
+        Stream.generate(() -> "x").limit(3).collect(Collectors.toList()).forEach(System.out::println);
+        System.out.println("Stream Iterator : ");
+        Stream.iterate(40, n -> n+2).limit(3).collect(Collectors.toList()).forEach(System.out::println);
+
+        System.out.println("IntStream range (1,5) : ");
+        Stream.Builder<Integer> x = Stream.builder();
+        IntStream.range(1,5).forEach(k-> x.add(k*4));
+        x.build().forEach(System.out::println);
+        System.out.println("IntStream rangeClosed (1,5) : ");
+        Stream.Builder<Integer> y = Stream.builder();
+        IntStream.rangeClosed(1,5).forEach(k-> y.add(k*4));
+        y.build().forEach(System.out::println);
+        System.out.println("Stream pipeline : ");
+        Stream.of("a","b","c").filter(a -> !a.contains("b")).forEach(System.out::println);
+        System.out.println(Stream.of("a","bc","cwdd").filter(a -> a.length() > 1).collect(Collectors.joining(" ")));
+        System.out.println(Stream.of("a","b","c").skip(1).collect(Collectors.joining(" ")));
+        System.out.println(Stream.of("b","a","ac").map(k -> ""+k.charAt(0)).sorted().collect(Collectors.joining(" ")));
+        System.out.println(Stream.of("bglgi","abll","acityf").filter(a -> a.startsWith("a")).map(k -> ""+k.charAt(0)).count());

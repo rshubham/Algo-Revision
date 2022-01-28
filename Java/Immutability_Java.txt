@@ -1,0 +1,51 @@
+
+Immutability in java:
+
+Immutable objects are instances whose state doesn’t change after it has been initialized. For example, String is an immutable class and once instantiated its value never changes.
+
+Usages:
+
+1. An immutable class is good for caching purposes because you don’t have to worry about the value changes.
+2. Another benefit of immutable class is that it is inherently thread-safe, so you don’t have to worry about thread safety in case of multi-threaded environment.
+
+Steps to make a class immutable in java:
+
+1. Declare the class as final - so, it can't be extended.
+2. Make all fields private - so, direct access is not allowed.
+3. Don't provide setter methods for variables.
+4. Make all mutable fields final. So, that its value can be assigned only once.
+5. Initialize all the fields via constructor performing deep copy.
+6. Perform cloning of objects in the getter methods to return copy rather than returning the actual object reference.
+
+
+final class MyClass {
+
+    private final A varA;
+    private final B varB;
+    private final Map<String,String> map;
+
+    MyClass(A varA, B varB, Map<String,String> hm){
+        this.varA = varA;
+        this.varB = varB;
+        Map<String,String> copyMap = new HashMap<>();
+        for(Map.Entry<String,String> m : hm.entrySet()){
+            copyMap.put(m.getKey(), m.getValue());
+        }
+        this.map = copyMap;
+    }
+
+    public A getVarA(){
+        return varA;
+    }
+
+    public B getVarB(){
+        return varB;
+    }
+
+    public Map<String,String> getMap(){
+        return this.map.clone();
+    }
+
+
+
+}

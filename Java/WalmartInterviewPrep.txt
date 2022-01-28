@@ -139,3 +139,780 @@ class Solution {
 
 
 }
+
+
+BiPartite Graph:
+----------------------------------------------------------
+
+public class BipartiteGraph {
+
+    class Node {
+
+        int val;
+        char color;
+
+        Node(int val){
+            this.val = val;
+            this.color = '\0';
+        }
+
+        void setColor(char color){
+            this.color = color;
+        }
+
+        char getColor(){
+            return this.color;
+        }
+
+        boolean isColored(){
+            return (this.color != '\0');
+        }
+
+        @Override
+        public boolean equals(Object o){
+            if(o == this) return true;
+            if(o == null || o.getClass() != this.getClass()) return false;
+            Node node = (Node) o;
+            return this.val == node.val;
+        }
+
+        @Override
+        public int hashCode(){
+            return Objects.hash(this.val);
+        }
+
+        @Override
+        public String toString(){
+            return "Node( " + this.val + ", " + this.color + " )";
+        }
+
+    }
+
+    private Map<Node, List<Node>> graph;
+
+    private void generateGraph(int[][] edges){
+        graph = new HashMap<>();
+        for(int i = 0; i < edges.length; i++){
+            createEdge(edges[i][0],edges[i][1]);
+            createEdge(edges[i][1],edges[i][0]);
+        }
+    }
+
+    private void createEdge(int start, int end){
+        if(graph.containsKey(new Node(start))){
+            graph.get(new Node(start)).add(new Node(end));
+        } else {
+            graph.put(new Node(start), new ArrayList<Node>());
+            graph.get(new Node(start)).add(new Node(end));
+        }
+    }
+
+    // consider starting node = 1
+    public  boolean isBipartite(){
+        Node root = null;
+        Node x = new Node(1);
+
+        // searching for Node 1
+        if(!graph.containsKey(x)) return false;
+        //root = graph.getOrDefault(x,null);
+        root = x;
+        root.setColor('r');
+        Queue<Node> q = new LinkedList<Node>();
+        root.setColor('r');
+        q.add(root);
+        while(!q.isEmpty()){
+            Node curr = q.poll();
+            char currColor = curr.getColor();
+            List<Node> list = graph.get(curr);
+            for(Node child : list){
+                // check if colored
+                if(child.isColored()){
+                    if(child.getColor() == currColor) return false;
+                    if(child.getColor() != currColor) continue;
+                }
+                // if not colored then set color
+                if(currColor == 'r') child.setColor('b');
+                else child.setColor('r');
+                q.add(child);
+            }
+        }
+        return true;
+    }
+
+
+    public static void main(String[] args){
+
+        BipartiteGraph obj = new BipartiteGraph();
+        int[][] edges = new int[][]{
+                {1,2},{1,4},{1,5},{2,3},{3,7},{4,6},{5,6},{6,7}
+        };
+        obj.generateGraph(edges);
+        for(Map.Entry<Node, List<Node>> m : obj.graph.entrySet()){
+            System.out.print(m.getKey() + " => ");
+            for(Node node : m.getValue()){
+                System.out.print(node + ", ");
+            }
+            System.out.println();
+        }
+        System.out.println(obj.isBipartite());
+        for(Map.Entry<Node, List<Node>> m : obj.graph.entrySet()){
+            System.out.print(m.getKey() + " => ");
+            for(Node node : m.getValue()){
+                System.out.print(node + ", ");
+            }
+            System.out.println();
+        }
+    }
+
+}
+
+
+
+--------------------------------------------------------
+
+from: 
+https://leetcode.com/discuss/interview-experience/747153/walmart-labs-software-engineer-iii-bangalore-june-2020
+
+2nd Round - JAVA - 1hr
+He focused more on multi-threading and seems like he is not interested in listening to all the approaches, he was focusing more on per defined approach which he made up in his mind. He asked me the following questions,
+1. Write your own Blocking Queue(Producer consumer problem)
+2. Concurrent hash map internals
+3. He asked some questions on the future, callable, and thread executor.
+4. Asked me to write code for making a class immutable.
+5. Few java collection related questions
+
+
+1.
+My Implementation:
+
+class MyBlockingQueue<T> {
+
+    private Integer MAX_CAPACITY;
+    private Queue<T> queue;
+
+    public MyBlockingQueue(Integer maxCapacity){
+        this.MAX_CAPACITY = maxCapacity;
+        this.queue = new LinkedList<T>(this.MAX_CAPACITY);
+    }
+
+    // behaviours
+
+    public void enqueue(T task){
+        if(task == null) return;
+        int previousSize = this.queue.size();
+        synchronized(this){
+            if(this.queue.size() == this.MAX_CAPACITY){
+                try {
+                    this.wait();
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+                
+            }
+            queue.add(task);
+            if(previousSize == 0) this.notifyAll();
+        }
+    }
+
+    // 
+    
+    public T dequeue(){
+        int previousSize = this.queue.size();
+        synchronized(this){
+            if(this.queue.size() == 0){
+                try {
+                    this.wait();
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            queue.poll();
+            if(previousSize == this.MAX_CAPACITY) this.notifyAll();
+        }
+    }
+}
+
+
+2. Concurrent hash map internals
+
+ConcurrentHashMap: It allows concurrent access to the map. Part of the map called Segment (internal data structure) is only getting locked while adding or updating the map. So ConcurrentHashMap allows concurrent threads to read the value without locking at all. This data structure was introduced to improve performance.
+
+Concurrency-Level: Defines the number which is an estimated number of concurrently updating threads. The implementation performs internal sizing to try to accommodate this     many threads.   
+
+Load-Factor: It's a threshold, used to control resizing.
+
+Initial Capacity: The implementation performs internal sizing to accommodate these many elements.
+
+A ConcurrentHashMap is divided into number of segments, and the example which I am explaining here used default as 32 on initialization.
+
+A ConcurrentHashMap has internal final class called Segment so we can say that ConcurrentHashMap is internally divided in segments of size 32, so at max 32 threads can work at a time. It means each thread can work on a each segment during high concurrency and atmost 32 threads can operate at max which simply maintains 32 locks to guard each bucket of the ConcurrentHashMap.
+
+
+https://javarevisited.blogspot.com/2013/02/concurrenthashmap-in-java-example-tutorial-working.html#axzz7I9mjiAtn
+
+3. He asked some questions on the future, callable, and thread executor.
+
+https://javarevisited.blogspot.com/2015/01/how-to-use-future-and-futuretask-in-Java.html#axzz7I9mjiAtn
+
+a. Future is an interface and FutureTask is an implementation or RunnableFuture, which can be used as a Runnable interface, thus, it can be passed to ExecutorService.
+
+---------------
+
+Diff b/w execute() and submit():
+https://www.geeksforgeeks.org/difference-between-executorservice-execute-and-submit-method-in-java/
+
+public interface Executor { 
+    Executes the given command at some time in the future.  The command
+     * may execute in a new thread, in a pooled thread, or in the calling
+     * thread, at the discretion of the {@code Executor} implementation.
+    void execute(Runnable command); }
+throws: 
+RejectedExecutionException if this task cannot be accepted for execution.
+NullPointerException if command is null
+
+public interface ExecutorService extends Executor {
+    void shutdown();
+    throws: SecurityException
+
+    List<Runnable> shutdownNow();
+    Attempts to stop all actively executing tasks, halts the processing of waiting tasks, and returns a list of the tasks that were awaiting execution.
+
+    boolean isShutdown();
+    Returns {@code true} if this executor has been shut down.
+
+    boolean isTerminated();
+    Returns {@code true} if all tasks have completed following shut down.
+    Note that {@code isTerminated} is never {@code true} unless either {@code shutdown} or {@code shutdownNow} was called first.
+
+    boolean awaitTermination(long timeout, TimeUnit unit)
+        throws InterruptedException;
+
+    
+    <T> Future<T> submit(Callable<T> task);
+    Submits a value-returning task for execution and returns a Future representing the pending results of the task. The Future's {@code get} method will return the task's result upon successful completion.
+
+    <T> Future<T> submit(Runnable task, T result);
+
+    Future<?> submit(Runnable task);
+
+    <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks)
+        throws InterruptedException;
+    Executes the given tasks, returning a list of Futures holding their status and results when all complete. {@link Future#isDone} is {@code true} for each element of the returned list.
+    Note that a <em>completed</em> task could have terminated either normally or by throwing an exception. The results of this method are undefined if the given collection is modified while this operation is in progress.
+}
+
+
+Executors:
+
+
+ThreadPools:
+
+1. New Fixed Thread Pool:
+
+public static ExecutorService newFixedThreadPool(int nThreads) {
+        return new ThreadPoolExecutor(nThreads, nThreads,
+                                      0L, TimeUnit.MILLISECONDS,
+                                      new LinkedBlockingQueue<Runnable>());
+}
+
+Desc:
+
+Creates a thread pool that reuses a fixed number of threads
+     * operating off a shared unbounded queue.  At any point, at most
+     * {@code nThreads} threads will be active processing tasks.
+     * If additional tasks are submitted when all threads are active,
+     * they will wait in the queue until a thread is available.
+     * If any thread terminates due to a failure during execution
+     * prior to shutdown, a new one will take its place if needed to
+     * execute subsequent tasks.  The threads in the pool will exist
+     * until it is explicitly {@link ExecutorService#shutdown shutdown}.
+
+
+2. Work Steal Thread Pool:
+
+public static ExecutorService newWorkStealingPool(int parallelism) {
+        return new ForkJoinPool
+            (parallelism,
+             ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+             null, true);
+    }
+
+Desc:
+
+Creates a thread pool that maintains enough threads to support
+     * the given parallelism level, and may use multiple queues to
+     * reduce contention. The parallelism level corresponds to the
+     * maximum number of threads actively engaged in, or available to
+     * engage in, task processing. The actual number of threads may
+     * grow and shrink dynamically. A work-stealing pool makes no
+     * guarantees about the order in which submitted tasks are
+     * executed.
+
+
+3. New Work Stealing Pool: (Type of Fork-Join Pool)
+
+public static ExecutorService newWorkStealingPool() {
+        return new ForkJoinPool
+            (Runtime.getRuntime().availableProcessors(),
+             ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+             null, true);
+    }
+
+Desc:
+Creates a work-stealing thread pool using all
+     * {@link Runtime#availableProcessors available processors}
+     * as its target parallelism level.
+
+
+4. New Fixed ThreadPool - ThreadFactory implementation
+
+
+public static ExecutorService newFixedThreadPool(int nThreads, ThreadFactory threadFactory) {
+        return new ThreadPoolExecutor(nThreads, nThreads,
+                                      0L, TimeUnit.MILLISECONDS,
+                                      new LinkedBlockingQueue<Runnable>(),
+                                      threadFactory);
+    }
+
+Desc:
+
+Creates a thread pool that reuses a fixed number of threads
+     * operating off a shared unbounded queue, using the provided
+     * ThreadFactory to create new threads when needed.  At any point,
+     * at most {@code nThreads} threads will be active processing
+     * tasks.  If additional tasks are submitted when all threads are
+     * active, they will wait in the queue until a thread is
+     * available.  If any thread terminates due to a failure during
+     * execution prior to shutdown, a new one will take its place if
+     * needed to execute subsequent tasks.  The threads in the pool will
+     * exist until it is explicitly {@link ExecutorService#shutdown
+     * shutdown}.
+
+5. New Single ThreadPool:
+
+public static ExecutorService newSingleThreadExecutor() {
+        return new FinalizableDelegatedExecutorService
+            (new ThreadPoolExecutor(1, 1,
+                                    0L, TimeUnit.MILLISECONDS,
+                                    new LinkedBlockingQueue<Runnable>()));
+    }
+
+Desc:
+Creates an Executor that uses a single worker thread operating
+     * off an unbounded queue. (Note however that if this single
+     * thread terminates due to a failure during execution prior to
+     * shutdown, a new one will take its place if needed to execute
+     * subsequent tasks.)  Tasks are guaranteed to execute
+     * sequentially, and no more than one task will be active at any
+     * given time. Unlike the otherwise equivalent
+     * {@code newFixedThreadPool(1)} the returned executor is
+     * guaranteed not to be reconfigurable to use additional threads.
+
+
+6. New Cached Thread Pool:
+
+public static ExecutorService newCachedThreadPool() {
+        return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                      60L, TimeUnit.SECONDS,
+                                      new SynchronousQueue<Runnable>());
+    }
+
+Desc:
+
+Creates a thread pool that creates new threads as needed, but
+     * will reuse previously constructed threads when they are
+     * available.  These pools will typically improve the performance
+     * of programs that execute many short-lived asynchronous tasks.
+     * Calls to {@code execute} will reuse previously constructed
+     * threads if available. If no existing thread is available, a new
+     * thread will be created and added to the pool. Threads that have
+     * not been used for sixty seconds are terminated and removed from
+     * the cache. Thus, a pool that remains idle for long enough will
+     * not consume any resources. Note that pools with similar
+     * properties but different details (for example, timeout parameters)
+     * may be created using {@link ThreadPoolExecutor} constructors.
+
+
+7. New Single Scheduled ThreadPool:
+
+
+public static ScheduledExecutorService newSingleThreadScheduledExecutor() {
+        return new DelegatedScheduledExecutorService
+            (new ScheduledThreadPoolExecutor(1));
+    }
+
+Desc:
+
+Creates a single-threaded executor that can schedule commands
+     * to run after a given delay, or to execute periodically.
+     * (Note however that if this single
+     * thread terminates due to a failure during execution prior to
+     * shutdown, a new one will take its place if needed to execute
+     * subsequent tasks.)  Tasks are guaranteed to execute
+     * sequentially, and no more than one task will be active at any
+     * given time. Unlike the otherwise equivalent
+     * {@code newScheduledThreadPool(1)} the returned executor is
+     * guaranteed not to be reconfigurable to use additional threads.
+     * @return the newly created scheduled executor
+
+
+8. New Schedule Thread Pool:
+
+public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) {
+        return new ScheduledThreadPoolExecutor(corePoolSize);
+    }
+
+Desc:
+
+Creates a thread pool that can schedule commands to run after a
+     * given delay, or to execute periodically.
+     * @param corePoolSize the number of threads to keep in the pool,
+     * even if they are idle
+     * @return a newly created scheduled thread pool
+     * @throws IllegalArgumentException if {@code corePoolSize < 0}
+
+
+9. unconfigurableScheduledExecutorService
+
+public static ScheduledExecutorService unconfigurableScheduledExecutorService(ScheduledExecutorService executor) {
+        if (executor == null)
+            throw new NullPointerException();
+        return new DelegatedScheduledExecutorService(executor);
+    }
+Returns an object that delegates all defined {@link
+     * ScheduledExecutorService} methods to the given executor, but
+     * not any other methods that might otherwise be accessible using
+     * casts. This provides a way to safely "freeze" configuration and
+     * disallow tuning of a given concrete implementation.
+     * @param executor the underlying implementation
+     * @return a {@code ScheduledExecutorService} instance
+     * @throws NullPointerException if executor null
+
+
+ThreadFactory implementation:
+
+DefaultThreadFactory,
+PrivilegedThreadFactory,
+defaultThreadFactory
+
+
+---------------------------------
+
+4. Make Class Immutable:
+
+Steps to make a class immutable in java:
+
+1. Declare the class as final - so, it can't be extended.
+2. Make all fields private - so, direct access is not allowed.
+3. Don't provide setter methods for variables.
+4. Make all mutable fields final. So, that its value can be assigned only once.
+5. Initialize all the fields via constructor performing deep copy.
+6. Perform cloning of objects in the getter methods to return copy rather than returning the actual object reference.
+
+
+final class MyClass {
+
+    private final A varA;
+    private final B varB;
+    private final Map<String,String> map;
+
+    MyClass(A varA, B varB, Map<String,String> hm){
+        this.varA = varA;
+        this.varB = varB;
+        Map<String,String> copyMap = new HashMap<>();
+        for(Map.Entry<String,String> m : hm.entrySet()){
+            copyMap.put(m.getKey(), m.getValue());
+        }
+        this.map = copyMap;
+    }
+
+    public A getVarA(){
+        return varA;
+    }
+
+    public B getVarB(){
+        return varB;
+    }
+
+    public Map<String,String> getMap(){
+        return this.map.clone();
+    }
+}
+
+-------------------------------------------
+
+Round 3: Java
+
+The interviewer was quite serious and was not willing to help at all if I stuck somewhere.
+First, he asked me to write a program to balance the brackets and asked me to execute the program. Once this was completed he moved to java questions and asked me the following questions,
+1. What is special about Strings in java. How String pool works.
+2. Write a program for singleton class, he was more focusing on the thread-safe approach.
+3. Comparable vs comparator
+4. wait vs sleep in threads
+5. Blocking queue working
+6. He asked to write the SQL query, I didn't remember the exact question, as I am from the NoSQL background.
+7. Indexing in the database.
+8. Asked me to write a program for reversing a linked list.
+
+4th Managerial round - 1hr
+
+He was cool guy started the interview with a greeting, Post that he asked to draw the architecture diagram for the project on which I was working in the last organization. He asked a few questions on that, post that he moved to the design questions, where he asked me to design HTML file parser and few questions on the other design pattern too. Lastly, he explained to me about the team which I will be joining.
+
+
+Custom ThreadPool Executor:
+https://www.javacodemonk.com/implement-custom-thread-pool-in-java-without-executor-framework-ca10e61d
+
+
+Why do we need ThreadPool executor?
+There are many reasons one would like to use threadpool executor:
+
+Creating and destroying threads is a IO extensive operation, which has impact on performance and memory consumption of an application. So its ideal to create threads once and reuse them later on.
+
+We do not want to run out of threads when heavy load arrives on an application. Threadpool holds tasks in a queue, so if lot of tasks arrives in a very short amount of time, queue will hold the tasks until a worker thread becomes available for the processing. This approach prevents resource exhaustion in production environment.
+
+If due to some reasons, thread gets killed, ThreadPoolExecutor will recreate the thread and put it back to the pool.
+
+
+--------------------
+
+ThreadLocal vs Local Variable:
+
+https://stackoverflow.com/questions/10115537/threadlocal-vs-local-variable-in-runnable
+
+
+Interesting Answer:
+
+I found two uses so far -
+
+Saving thread specific values inside the same shared object
+Alternative to passing variables as parameters through N-layers of code
+1:
+
+If you have two threads operating on the same object and both threads modify this object - then both threads keep losing their modifications to each other.
+
+To make this object have two separate states for each thread, we declare this object or part of it ThreadLocal.
+
+Of course, ThreadLocal is only beneficial here because both threads are sharing the same object. If they are using different objects, there's no need for the objects to be ThreadLocal.
+
+2:
+
+The second benefit of ThreadLocal, seems to be a side effect of how its implemented.
+
+A ThreadLocal variable can be .set() by a thread, and then be .get() anywhere else. .get() will retrieve the same value that this thread had set anywhere else. We'll need a globally available wrapper to do a .get() and .set(), to actually write down the code.
+
+When we do a threadLocalVar.set() - its as if its put inside some global "map", where this current thread is the key.
+
+As if - someGlobalMap.put(Thread.currentThread(),threadLocalVar);
+
+So ten layers down, when we do threadLocalVar.get() - we get the value that this thread had set ten layers up.
+
+threadLocalVar = someGlobalMap.get(Thread.currentThread());
+
+So the function at tenth level does not have to lug around this variable as parameter, and can access it with a .get() without worrying about if it is from the right thread.
+
+Lastly, since a ThreadLocal variable is a copy to each thread, of course, it does not need synchronization. I misunderstood ThreadLocal earlier as an alternative to synchronization, that it is not. It is just a side effect of it, that we dont need to synchronize the activity of this variable now.
+
+
+Try to implement LFU and LRU together.
+
+
+------------------------------------------------------
+
+HM Round Questions:
+
+
+HM & Leadership Round
+
+1. Deliver Results::  Tell me about a time where you overcame an obstacle and delivered results.
+Java Agent / Async Implementation
+
+2. Ownership ::  Give an example of when you took a risk and it failed.
+risk => delivery - extend / failed to deliver
+
+3. Going Beyond:: Tell me about a time when you could have stopped working but persisted.
+Lead left the company and just before go live and I volunteered and handled the project being a fresher.
+
+4. Innovate:: Tell me about a time when you proposed a new idea.
+Java Agent
+
+5. Data Driven:: Tell me about a time when you had to dive deep into the data and the results you achieved.
+Something I developed and it given a timeout, So, I had to go through the DB Querys
+
+6. Decision Making:: Tell me about the most difficult decision you had to make at work.
+
+
+7. Cost Consciousness:: Tell me about a time where you thought of a clever new way to reduce costs for your product
+
+8. Adding Value:: Tell me a time when you worked on an innovative project. How do you find the time to acquire new knowledge, and continue innovating in your work?
+I'll ask for a POC 
+
+
+1. Current Company : OEM (Mobile domain)
+YOE : 6.7 yrs
+College : NIT/IIIT
+Position Applied for : Java Backend Engineer
+
+Round - 3 HM (1.45 hour)
+
+Explaination about team and working
+
+1) Why walmart?
+
+4 Walmart values are attractive to me. 
+    a. Service to the Customer, 
+    b. Respect for the Individual, 
+    c. Striving for Excellence and 
+    d. Acting with Integrity are all values that ring true with my own style of working.
+ 
+ We spend a lot of time at work, and I want to work with a group of like-minded people who are all continually improving and growing together to deliver great service to the customer.
+
+ -- Culture of Continous Improvement and Growth.
+
+Because Walmart sets high standards and supports its staff, I feel I will be able to work here for a long period of time. I am at the stage in my life where I want long-term employment and, if I am successful, I feel I will be able to enjoy a stable and fruitful career in a positive working environment.
+
+ Why you quoted 34 ?
+
+ I think this is the market statndard for my level of experience which is close to 5 years now, and I've rich experience in working with multiple domains and technology. I can deliver my best of efforts.
+
+ Parameters for joining a company?
+ 1. Work which I'm being assigned. - I'd like to have a discussion with the Hiring Manager about the team which I'm going to work upon and work perspective.
+ 2. Money
+
+2) Why leaving current company?
+
+No, doubt - I'm getting a good work over here - developing applications from scratch and solving problems. But all of this is in the small scale and the exposure for the challenges is quite limited. Like, we work on SQL DBs and having tight integrations with Oracle DB only. And, no-doubt I can use the new technologies here - but the scope of its implementation is also limited. So, I think Walmart can provide me that kind of exposure to the large scale systems and new challenges with new problems which can be solved and implemented on a bigger picture and adds value to the overall growth of the company.
+
+
+What are your long term plans in Walmart?
+
+If I join Walmart, then my focus will be on my contribution/value addition to the overall growth of the organization, and how I along with my peers can solve the upcoming technical problems and challenges which comes up with time. I see myself going for Staff Software Engineer in the next 5 years of timeline.
+
+What are your first year plans in Walmart?
+
+If I join Walmart, then for the first year - my sole focus will be how can I grasp the technology and code base of the team and start contributing to the delivery targets. With this journey, I'll be learning the tech and design challenges faced by the team in the recent past and if given opportunity will help find out the new ways and ideas to solve and improve the solutions.
+
+Explain page rank algorithm to an eight year old child. - why asked ?
+
+Teach me something new in 4 minutes ? 
+
+Do you watch/play football ?
+Offside Trap / false 9.
+
+
+How do you solve a particular problem when faced for the first time?
+
+I try to understand few things by asking these questions to myself - 
+    a. Why we're solving this Problem? What are we going to acheive ?
+    b. What exactly is the problem statement - understand the nitty-gritty of the problem.
+    c. What are the trade-offs which can be applied while solving the problem ? - like if solving coding problem - time/space are tradeoffs or Designing an application - CAP is the tradeoff.
+    d. Research on the Problem and try to come up with an initial/brute force approach.
+    e. Optimize or move forward on the top of it and thinking of any cases where my approach will fail.
+    f. Present the optimized approach, which I can reach.
+
+He explained the team under him and then asked me what all the technical changes in the processes you would like to make.
+
+Round - 4 Sr. Director (15 mins)
+
+Why leaving current organisation?
+How was the hiring experience?
+Why leaving the current company?
+What are your specific plans for 1 year after joining walmart?
+
+2. 
+
+Status: 2Y 7M experience, Tier 2 College
+Position: Software Engineer at a product based MNC
+Date: Mar 2021
+Round 4 - Hiring Manager
+
+Big Data concepts and troubleshooting
+Java Memory management and garbage collection
+One programming question and complexity analysis
+Behavioral questions
+
+
+3.
+Round 2 :- (Java + DSA Round)
+
+Started with Java questions first 30 minutes
+-> What is Composition how it is used
+-> What is Inheritance and its uses and differences with Association and some practical questions
+-> What is Spring Boot
+-> Design patterns discussion Builder, Singleton, Factory
+-> Current application deployment architecture
+-> How to scale application
+
+Round 5 :- (HM Round)
+
+-> Managerial questions
+-> Discussion about low level design of POS application
+
+4. https://leetcode.com/discuss/interview-experience/1425954/Google-Amazon-Nvidia-etc.-or-Bad-Interview-Experiences-or-2021
+
+3rd Round was HM
+
+Project related question
+Question on what I work on daily basis
+Basics of Java
+
+------------------------------------------------------
+
+Strategy:
+
+1. Projects - Orch Tool and Connection Pool and Java Agent
+2. Design Patterns 
+3. System Design - Primer overview.
+4. STAR Method = Situation Task Action Result
+-----------------------
+
+
+
+More HM questions:
+
+gfg 3yoe :
+
+Round 3(Manager):
+
+1. why walmart, discussion on my current project.
+2. discussion on sql indexing and joins.
+3. discussion on java class initialization and constructors.
+4. discussion on garbage collector algorithms.
+5. 2 mathematical puzzle. first one was something related to counting numbers using fingers of one hand in alternate order. given a large number which finger will be the last finger when counting ends. second one was related to time velocity concept.
+6. about my weakness and how will i improve it.
+7. what was the last feedback you got from your manager.
+
+Round 4 (HR):
+
+1. tell me abt yourself, why walmart?
+2. where u see yourself after 5 yesrs.
+3. what i like and dislike about my current manager.
+I personally like my current manager, he shares about the roles and responsibilities - He is a good, humble and down to earth person - whenever I face any kind of difficult situations - my best way to work is try be in sync with my manager and we both try to fix the problem together as a team. 
+
+4. my expectation from walmart.
+
+
+
+HM:
+Round 4:- 
+1. Why do you want to join Walmart Labs? 
+2. What are the biggest challenges faced by me in my current job. 
+
+
+-----------------------------------------------------------------
+
+Round 3:- 
+1. Design a data structure which provides the following APIs:- 
+a. insert element in O(1) 
+b. delete an element in O(1) 
+c. find a random element in O(1) 
+2. Some questions on Java basics. 
+3. Some discussion on projects done in current job. 
+4. Got 1 feedback that my knowledge of Java is not so good. So, if we hire you, then what will be your strategy to improve on your Java skills. 
+
+Round 4:- 
+1. Why do you want to join Walmart Labs? 
+2. What are the biggest challenges faced by me in my current job. 
+
+-------------------------------------------------------------------
+
+

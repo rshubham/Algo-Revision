@@ -1,0 +1,29 @@
+
+
+
+=> DB Instance 1 => Order (master)
+   -------------------------------------
+=> DB Instance 2 => Order master replica
+
+------------------------------------------------
+
+DB Replication:
+
+CQRS: Command Query Responsibility Segregation
+
+WHat are we sending:
+
+1. naive implementation: send the sql strings to the replica.
+2. Write Ahead Log: same as above but while maintaining a log file.
+
+disadvantanges: running query involves multiple steps like execution plan and executing according to it. We don't want to do the other DB these same steps again.
+
+Binary Streaming Replication: Send the Data / output of the query execution to other DB. Convert the data to binary and stream the data to other DB.
+
+Logical Replication: Implemented in PostgreSQL
+
+Sychronous Replication: Whenever write - write to all the DBs - till all the DBs return yes, it'll not return back with success.
+
+
+
+

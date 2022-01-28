@@ -1,0 +1,34 @@
+
+
+HashMap LoadFactor:
+
+
+source: https://stackoverflow.com/questions/10901752/what-is-the-significance-of-load-factor-in-hashmap
+
+Interesting Comments:
+
+Other answers are suggesting specify capacity = N/0.75 to avoid rehashing, but my initial thought was just set load factor = 1. Would there be downsides to that approach? Why would load factor affect get() and put() operation costs? – 
+supermitch
+ Nov 30 '13 at 22:05
+21
+A load factor=1 hashmap with number of entries=capacity will statistically have significant amount of collisions (=when multiple keys are producing the same hash). When collision occurs the lookup time increases, as in one bucket there will be >1 matching entries, for which the key must be individually checked for equality. Some detailed math: preshing.com/20110504/hash-collision-probabilities – 
+atimb
+ Mar 26 '14 at 20:48
+10
+I'm not following you @atimb; The loadset property is only used to determine when to increase the storage size right? -- How would having a loadset of one increase the likelyhood of hash collisions? -- The hashing algorithm has no knowledge of how many items are in the map or how often it acquires new storage "buckets", etc. For any set of objects of the same size, regardless of how they are stored, you should have the same probability of repeated hash values... – 
+BrainSlugs83
+ Nov 2 '14 at 6:33
+21
+The probability of the hash collision is less, if the size of the map is bigger. For example elements with hash codes 4, 8, 16 and 32 will be placed in the same bucket, if the size of the map is 4, but every item will get an own bucket, if the size of the map is more than 32. The map with initial size 4 and load factor 1.0 (4 buckets, but all the 4 element in a single bucket) will be in this example in average two times slower than another one with the load factor 0.75 (8 buckets, two buckets filled - with element "4" and with elements "8", "16", "32"). – 
+30thh
+ Nov 13 '14 at 20:56 
+why higher values " increase the lookup cost ", can you explain ? – 
+Adelin
+ Aug 13 '18 at 10:43
+1
+@Adelin Lookup cost is increased for higher load factors because there will be more collisions for higher values, and the way that Java handles collisions is by putting the items with the same hashcode in the same bucket using a data structure. Starting in Java 8, this data structure is a binary search tree. This makes the lookup worst-case time complexity O(lg(n)) with the very worst case occurring if all of the elements added happen to have the same hashcode. – 
+Gigi Bayte 2
+ Dec 23 '19 at 19:23
+@Adelin The lookup costs go high as they are directly proportional to the time we have, in order to increase the size of the hashtable's memory allocation when the threshold (LF*current capacity) is hit. As rehashing involves re-allocating contiguous memory locations to the entries and the fact that contiguous memory locations are not guaranteed to be available from currently allocated locations, makes it inevitable to perform move operations on each map entry, while it is being used to either put() into/get() from. If the LF is lower we get more time to reallocate before we hit the max limit. – 
+Abhay Nagaraj
+ Sep 3 '21 at 15:49 

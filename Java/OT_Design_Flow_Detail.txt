@@ -1,0 +1,234 @@
+--------------------------------------------------------------------------------------------------------------------------------
+STAR : 
+
+Situation: 
+M&A activities for bulk data import / loading - less performant and less efficient and more human errors which involves a lot of data fixes and increased the delivery timeline and tight coupling with DB.
+
+Task: 
+Improve the efficiency of the Migration Activity of new M&A and Internal Cloud Migrations and Reducing Migration Errors and data fixes.
+
+Action:
+Designed and Developed an Orchestration Tool to implement batch processing and running batches in parallel for each migration activity.
+
+Result: 
+The Migration efficiency is improved and delivery time of the migration improved significantly with less data errors as more importance and time is dedicated to collecting and validating the data before migration.
+
+--------------------------------------------------------------------------------------------------------------------------------
+Orch Tool:
+
+What is Orch Tool ?
+
+Its a Batch Processing Tool, designed and developed to orchestrate the flow of migration activity of the data from one system to another. Intensively used by Data Migration Team in Oracle. The Migration Activity can contain multiple things within it - like triggering an import job, making an HTTP call, Java Action, PLSQL Action on a remote server (recently integrated with a new feature) developed.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+HLD of Orch Tool:
+
+
+
+        Orch Tool => OSB Layer => (Proxy Server) => (Import Service) / (UCM Service)
+        (GXP Envt)
+
+        Orch Tool => Queue Tasks in AQ =>  Agent will send a heartbeat signal to Poll the Tasks from the Queue.
+        (GXP Envt)
+
+        Agent Registry Module - Registered Agents will try to poll the data from the AQ.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+LLD of Orch Tool ? 
+
+I've a designed the flow of the orchestrator using a mix of design patterns - 
+User will configure its project as migration activity, project will be associated with a Batch Class.
+The Batch can exist on its own, and compose multiple entities like Batch Type, Batch Action and Batch Configuration.
+Batch Action will further be divided into Batch Steps/Sequences.
+Each Step will have an Action to be performed - triggering an import job, http call, groovy action, sql action on a remote server.
+
+Controller => Batch-Orchestrator (which will orchestrate the flow of the Batch dynamically)
+Batch Orchestrator - will be run using Batch Commands like Run Batch, Stop Batch, or Resume Batch. - implemented using Command Design Pattern.
+Batch Orchestrator will trigger the action based on the Command, 
+if Run Batch 
+    a. It'll trigger the batch run sequentially - store the batch state in a table.
+    b. perform the actions within a batch step and fetch the response.
+    c. The Reponse will be forwarded to the Response Handler.
+    d. Response handler will trigger another batch action within a step as configured by the user. e.g. action type - sqlcl and run the dml query provided by the user.
+
+    if batch fails in the middle - 
+    i) It'll retry in exponential timeline 2 min, 4 min, 8 min, 16min, 32 min, 64min only. Otherwise The state will be updated in the DB - Batch State Table and will be retrieved once the user trigger the resume job action manually.
+
+
+    Resume Batch - We have a Integer Field called - FailedBatchId and I store the details of the failed batch in the variable.
+    1. Controller => Orchestrator => Batch Command => Resume Command
+    2. execute resume method in Batch Step
+    3. Spawn a thread from existing ThreadPool / wait for the thread to be available from the pool for the BatchStep.
+    4. Acquire the Thread - Check for the FailedBatchStepId, if -1 then release the thread to threadpool.
+    5. If FailedBatchId > 0, go to that step and search for the failed Action in the Batch Step.
+    6. Failed Action, will be stored in the FailedAction variable.
+    7. Same way as above the Failed Action is being performed in the sequential order.
+
+
+    How Resume will work:
+    Map<BatchStep> batchStepMap {
+        1 : {
+                    name: ""
+                    desc:
+                    state: ERROR 
+                    Actions : [
+                        {
+                            ActionType: SQLCL,
+                            ActionReq : { // plsql code}
+                            State   : FAILED
+                            ActionRes : { // } / null
+                         },
+                         {
+                            ActionType: HTTP,
+                            ActionReq : { // xml request }
+                            State   : NOT STARTED
+                            ActionRes : { xml response } / null
+                         }
+                    ]
+                    
+                    
+                    
+            },
+        2 : {
+                name: 
+                Actions : [
+                        {
+                            ActionType: SQLCL,
+                            ActionReq : { // plsql code}
+                            State   : FAILED
+                            ActionRes : { // } / null
+                         },
+                         {
+                            ActionType: HTTP,
+                            ActionReq : { // xml request }
+                            State   : COMPLETED
+                            ActionRes : { xml response } / null
+                         }
+                    ]
+            } 
+    }
+
+How Parallel Batches are executed ?
+
+If the degree of Parallelism is more in the specific project, then based on the degree of parallelism - it'll create a threadpool of N threads internally and run the N batches in parallel. Each Instance of Project will have its own ThreadPool.
+
+
+Generic Use Case:
+
+Batch created to trigger the Import Job.
+
+Batch Step:
+
+1. Data Staged in a Staging Table.
+2. Batch Action - Groovy - will create create the CSV file of the Data from the Staging Table specific to a batchId provided by user.
+3. CSV file is converted to base64 binary.
+4. The Http call is made along with the base64 data to upload the data to UCM.
+5. The Response of the UCM upload call will be returned to Response Handler.
+6. Response Handler will update the reponse 
+
+---------------
+
+APIs
+
+create-batch POST
+run-batch PUT
+stop-batch PUT
+resume-batch PUT
+
+---------------
+
+Entities:
+Project 1..1 BatchType (Association)
+BatchType 1..n BatchStep (List of BatchSteps - Composition)
+BatchStep 1..n BatchAction (List of BatchActions - Composition)
+BatchAction Strategy: 
+    a. sqlcl action
+    b. http call - rest/soap
+    c. groovy action
+    d. remote sqlcl call
+
+---------------
+Default BatchType Implementation for frequent usage: ImportManagement BatchType, File Based Import Batch Type (older import tool).
+Default Templates for SQL Query: For Each Object
+1. Generate Batch ID
+2. Update BatchId in the Object Table (Customer/Sales Objects used)
+3. Create CSV File for Import
+4. Convert CSV to Base64
+5. Rest Call to UCM Server - OCI Object Storage.
+6. Get the UCM Id
+7. Rest Call to Import Management with UCM Id and Object references.
+8. Get the ImportId
+9. Rest Call to check the Import Status with Import Id.
+10. As Import finishes, Trigger New Batch for Business Intelligence Job.
+11. BI Batch will fetch the desired data corresponding to the Parent Batch.
+12. Update the Object Table in Source DB.
+---------------
+
+Flow:
+
+12 batches , parallelism 3 => 9 batches req => Batch Queue (max capacity: 20) => project Specific 
+
+run-Batch:  
+{
+    batchId: 737438494
+    batchCommand: Run/Resume/Stop
+    BatchName: MyImportBatch
+    BatchType: BatchType
+    BatchOwner: "emailId"
+    Parallelism: 3
+}
+
+1. {context}/runBatch POST  
+2. Application Controller
+3. Batch Orchestrator <Singleton>
+    a. Based on the command Run Batch
+    b. Instantiate Batch Object based on BatchType <Singleton>
+    c. Spawn a threadPool if not already exist of the capacity - parallelism = 3;
+    d. if Parallelism > 1, using Thread.join() mechanism to run the Threads object in sequential manner to get the action object and update the batch table in DB against BatchId as primary key. (This is done to segregate the data pickup for Batch Initialization), then threads will be released to ThreadPool in sequential manner.
+    e. Threads will be picked up as we go action execution based on Strategy.
+
+
+resume-batch:
+
+Resume Batch - We have a Integer Field called - FailedBatchId and I store the details of the failed batch in the variable.
+    1. Controller => Orchestrator => Batch Command => Resume Command
+    2. execute resume method in Batch Step
+    3. Spawn a thread from existing ThreadPool / wait for the thread to be available from the pool for the BatchStep.
+    4. Acquire the Thread - Check for the FailedBatchId, if -1 then release the thread to threadpool.
+    5. If FailedBatchId > 0, go to that step and search for the failed Action in the Batch Step.
+    6. Failed Action, will be stored in the FailedAction variable.
+    7. Same way as above the Failed Action is being performed in the sequential order.
+
+
+--------------------------------------------------------------------
+
+
+Java Agent:
+
+--------------------------------------------------------------------------------------------------------------------------------
+STAR : 
+
+Situation: 
+During My Oracle Support Migration Activity, Legacy MOS DB recently migrated to OCI and Migration Team has a dependency to fetch Data from Legacy MOS DB to the PaaS DB GXP from there they'll run the batches to migrate the Legacy MOS Data to Fusion. But, there was some challenges related to security based concerns and MOS DB being available in different tenancy which is not possible to connect directly.
+
+Task: 
+I had to come up a solution to provide access to the DB present in MOS OCI Tenancy without breaching the security concerns raised by the MOS Team. So, I worked with MOS Team upon the solution and got hold of a VM present with one of the members of the team. Through which we can access the Legacy MOS DB. I did a POC on how we can figure out a solution to fix this concern and proposed a solution to develop a Worker/Agent service which we can connect from GXP/PaaS Tenancy and it further can connect with Legacy MOS DB and we can do any kind of activity on it. Migration Team, was facing a similar kind of issues with other Systems present in Oracle Ecosystem where Security Team had concern and doesn't provide any access. 
+
+Action:
+I designed and developed a new Agent Service on the top of Apache Camel and Spring Boot, to run a service which will be integrated to primary tool, which I developed called Orchestration Tool in GXP envt. 
+
+Result: 
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+To Start the Agent
+cd %OT_AGENT_HOME%/bin
+java -server -noverify -Djava.awt.headless=true -Dagent-config=%OT_AGENT_HOME%/config -Dagent-group=<GUID>_GROUP -Dserver-url=https://gxpet.oracle.com/ords/pgxpet/oaldm/cdmot/ -jar ot-sql-agent-0.0.1-SNAPSHOT.jar
+
+
+Agent/Worker Service:
+
+1. Agent will be integrated and Registered at the Orch Tool Agent Registry.
+2. Agent will constantly ask for the Tasks from the Advanced Queue, which will be pushed

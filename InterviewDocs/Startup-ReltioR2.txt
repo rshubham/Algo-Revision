@@ -1,0 +1,261 @@
+We have a file containing numbers. 
+Each number is on a separated line of the file. 
+File has the size of about 50 TB. Numbers can have duplicates. Result file shouldn’t contain duplicates.
+
+file 1
+1
+2
+3
+1
+
+50TB => 1000gb
+50000 files - 1 gb
+
+1 2 3 1 => 1 1 2 3
+
+Set: {1}
+
+-----------------------------------------------------------------------------------
+
+class AAA {
+
+   private static Object object = new Object();
+
+   public static void a() {
+       synchronized(object) {
+           System.out.println("Before " + Thread.currentThread().getId());
+           try {
+               object.wait();
+           } catch (Exception ignore) {}
+           System.out.println("After " + Thread.currentThread().getId());
+       }
+   }
+
+   public static void b() {
+       synchronized(object) {
+           System.out.println("Before Notify");
+           object.notifyAll();
+           System.out.println("After b");
+       }
+   }
+
+   public static void main(String[] args) throws InterruptedException {
+       new Thread(AAA::a).start();
+       new Thread(AAA::a).start();
+       Thread.sleep(1000);
+       System.out.println("sleep");
+       Thread.sleep(1000);
+       b();
+   }
+}
+
+
+
+Before <thread id 2>
+Before <thread id 1>
+sleep
+Before Notify
+After <thread id 2>
+After  <thread id 1>
+After b
+
+-------------------------------------------
+
+public final class Value {
+   private final int value;
+   final Random r = new Random();
+  
+   public Value(int value) {
+       this.value = value;
+   }
+  
+   public int getValue() {
+       return value;
+   }
+
+   public int hashCode() {
+       return r.nextInt();
+   }
+
+   public boolean equals(Object obj) {
+       return this.value == obj.value;
+   }
+  
+   public static void main(String[] args) {
+       HashMap<Value, Object> map = new HashMap<>();
+       Value v = new Value(10);
+       map.put(v, "Hello World");
+       System.out.println(map.get(v)); // output ?
+   }
+
+
+null
+-------------------------------------------
+OOP design for classes: Animal, Dog , Eye
+
+
+Animal
+
+Eye 
+
+
+Dog
+
+Eye
+
+
+Animal:
+
+public abstract class Animal {
+    
+    Eye eye;
+    
+    public Animal (Eye eye) {
+        
+        this.eye = eye;
+        
+    }
+    
+    eat(){
+        //
+    }
+}
+
+Dog:
+
+public class Dog extends Animal {
+    
+    public Dog(Eye eye){
+        super(eye);
+    }
+    
+    
+}
+
+Eye:
+
+public class Eye {
+    
+    // attributes
+    int number;
+    
+    // behavior
+    
+    
+}
+
+
+Eye eye = new Eye();
+Animal dog = new Dog(eye);
+
+
+
+SOLID
+
+Single Responsibility
+Open for Extension / Closed for Modification
+Liskov Substitution
+Interface Segregation
+Dependency Inversion
+
+A b
+|
+B b
+
+Interface Calculator {
+    add();
+    subtract();
+}
+
+interface NewCalculator extends Calculator{
+    muliplication();
+}
+
+------------------- AntiPattern
+
+interface Calculator {
+    calculate();
+}
+
+class AddCommand implements Calculator {
+}
+
+class AddMultiplicationCommand implements Calculator {
+}
+
+---------------------
+Calculator ca1 = 
+
+
+
+class Animal implements Walkable, CanEat, Sleepable{
+
+}
+
+class Dog extends Animal implements Walkable{
+
+}
+
+
+abstract class Bird {
+    eat();
+    makeSound();
+    walk(){
+        Syso "walking bird!";
+    }
+    fly()
+}
+
+
+class Duck extends Bird implements flyable{
+
+    eat() {
+        Syso "eat insects!"
+    }
+
+    makeSound(){
+        Syso "Quack!";
+    }
+
+    @Override
+    fly(){
+        Syso "Duck Flying!";
+    }
+}
+
+class Duck2 extends Duck{
+
+    eat() {
+        Syso "eat insects2 !"
+    }
+
+}
+
+Bird duck = new Duck2();
+duck.eat(); // ? . "eat insects2 !"
+Duck2 duck2 = new Duck2();
+duck2.eat(); // ? . "eat insects2 !"
+
+class NewDuck extends Duck implements NewBehavior{
+
+}
+
+interface NewBehavior {
+    fly();
+}
+
+interface Flyable {
+    fly();
+}
+
+class Ostrich extends Bird {
+
+    eat() {
+        Syso "Ostrich Eat!"
+    }
+
+    makeSound(){
+        Syso "Ostrich makes Sound!";
+    }
+
+}

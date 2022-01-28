@@ -1,0 +1,77 @@
+
+
+1358. Number of Substrings Containing All Three Characters
+
+Given a string s consisting only of characters a, b and c.
+
+Return the number of substrings containing at least one occurrence of all these characters a, b and c.
+
+Example 1:
+
+Input: s = "abcabc"
+Output: 10
+Explanation: The substrings containing at least one occurrence of the characters a, b and c are "abc", "abca", "abcab", "abcabc", "bca", "bcab", "bcabc", "cab", "cabc" and "abc" (again).
+
+-------------
+
+abcabc
+
+abc, bca, cab, abc
+abca, bcab, cabc,
+abcab, bcabc, abcabc
+
+
+=>     a  b  c  a  b  c
+          i           j
+
+minlength = 3;
+maxLength = N (s.length())
+sCount = 4;
+
+
+hm
+a => 1
+b => 2
+c => 3
+
+if(hm.size() == k) sCount++;
+
+--------------
+
+
+
+Example 2:
+
+Input: s = "aaacb"
+Output: 3
+Explanation: The substrings containing at least one occurrence of the characters a, b and c are "aaacb", "aacb" and "acb". 
+Example 3:
+
+Input: s = "abc"
+Output: 1
+
+
+-------------------
+
+
+public int numberOfSubstrings(String s) {
+    if(s == null || s.length() == 0) return 0;
+    char[] chars = s.toCharArray();
+    Map<Character, Integer> hm = new HashMap<>();
+    int start = 0, end = 0, count = 0;
+    boolean isShrinked = false;
+    while(end <= chars.length){
+        if(end < chars.length) hm.put(chars[end], hm.getOrDefault(chars[end],0)+1);
+        while(hm.size() == 3){
+            isShrinked = true;
+            count += chars.length - end + 1;
+            if(hm.get(chars[start]) == 0) hm.remove(chars[start]);
+            else hm.put(chars[start], hm.get(chars[start]) -1);
+            start++;
+            end++;
+        }
+        if(!isShrinked) end++;
+        else isShrinked = false;
+    }
+    return count;
+}

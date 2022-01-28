@@ -1,0 +1,92 @@
+
+Object Oriented Design:
+
+
+source: https://www.infoworld.com/article/3029325/exploring-association-aggregation-and-composition-in-oop.html?upd=1642349038132
+
+
+In UML, there are 5 diff types of relationships:
+a. Association
+b. Aggregation
+c. Composition
+d. Dependency
+e. Inheritence
+
+
+1. Association:
+    a. Sematically weak relationship b/w 2 otherwise unrelated objects.
+    b. An association is a "using" relationship b/w 2 or more objects where objects have their own lifetime and there is no owner.
+    c. As an example, imagine the relationship between a doctor and a patient. A doctor can be associated with multiple patients. At the same time, one patient can visit multiple doctors for treatment or consultation. Each of these objects has its own life cycle and there is no “owner” or parent. 
+    d. The objects that are part of the association relationship can be created and destroyed independently.
+    e. An association relationship can be represented as one-to-one, one-to-many, or many-to-many (also known as cardinality). 
+    f.  Essentially, an association relationship between two or more objects denotes a path of communication (also called a link) between them so that one object can send a message to another. 
+    g. The following code snippet illustrates how two classes, IDGBlogAccount and IDGBlogEntry, are associated with one another.
+
+                        public class IDGBlogAccount
+                        {
+                            private IDGBlogEntry[] blogEntries;
+                            //Other members of the IDGBlogAccount class
+                        }
+                        public class IDGBlogEntry
+                        {
+                            Int32 blogId;
+                            string caption;
+                            string text;
+                            //Other members of the IDGBlogEntry class
+                        }
+
+
+2. Aggregation:
+    a. Aggregation is a specialized form of association between two or more objects in which each object has its own life cycle but there exists an ownership as well. 
+    b. Aggregation is a typical whole/part or parent/child relationship but it may or may not denote physical containment.
+    c. An essential property of an aggregation relationship is that the whole or parent (i.e. the owner) can exist without the part or child and vice versa. 
+    d. As an example, an employee may belong to one or more departments in an organization. However, if an employee’s department is deleted, the employee object would not be destroyed but would live on. Note that the relationships between objects participating in an aggregation cannot be reciprocal—i.e., a department may “own” an employee, but the employee does not own the department. 
+    e. In the following code example, an aggregation relationship is evident between the IDGBlogAuthor and IDGBlogAccount classes.
+
+                        public class IDGBlogAuthor
+                        {
+                            private Int32 authorId;
+                            private string firstName;
+                            private string lastName;
+                            //Other members of the IDGBlogAuthor class
+                        }
+                        public class IDGBlogAccount
+                        {
+                            private IDGBlogEntry[] blogEntries;
+                            //Other members of the IDGBlogAccount class
+                        }
+    
+    f. Aggregation is usually represented in UML using a line with a hollow diamond. Like association, aggregation can involve a one-to-one, one-to-many, or many-to-many relationship between the participating objects. In the case of a one-to-many or many-to-many relationship, we may say that it is a redundant relationship.
+
+
+3. Composition:
+    a. Composition is a specialized form of aggregation.
+    b. In composition, if the parent object is destroyed, then the child objects also cease to exist.
+    c. Composition is actually a strong type of aggregation and is sometimes referred to as a “death” relationship. 
+    d. As an example, a house may be composed of one or more rooms. If the house is destroyed, then all of the rooms that are part of the house are also destroyed. The following code snippet illustrates a composition relationship between two classes, House and Room.
+
+                public class House{
+                    private Room room;
+                    public House(){
+                        room = new Room();
+                    }
+                }
+
+    e. Like aggregation, composition is also a whole/part or parent/child relationship.
+    f. However, in composition the life cycle of the part or child is controlled by the whole or parent that owns it. 
+    g. It should be noted that this control can either be direct or transitive. That is, the parent may be directly responsible for the creation or destruction of the child or the parent may use a child that has been already created. 
+    h. Similarly, a parent object might delegate the control to some other parent to destroy the child object. 
+    i. Composition is represented in UML using a line connecting the objects with a solid diamond at the end of the object that owns the other object.
+
+
+
+
+
+      "using"
+    Association =>  Independent objects - weak relationship - no owner/parent.
+
+      "has a"
+    Aggregation =>  Independent objects - ownership is present - parent/child.
+       
+     "belongs to"
+    Composition =>  Dependent Objects - lifecyle of one is controlled by owner/parent.

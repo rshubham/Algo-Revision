@@ -1,0 +1,63 @@
+
+
+Blocking Queue:
+
+
+1. A blocking queue is a queue that blocks when you try to dequeue from it and the queue is empty, or if you try to enqueue items to it and the queue is already full.
+
+2. A thread trying to dequeue from an empty queue is blocked until some other thread inserts an item into the queue. A thread trying to enqueue an item in a full queue is blocked until some other thread makes space in the queue, either by dequeuing one or more items or clearing the queue completely.
+
+
+
+
+
+My Implementation:
+
+class MyBlockingQueue<T> {
+
+    private Integer MAX_CAPACITY;
+    private Queue<T> queue;
+
+    public MyBlockingQueue(Integer maxCapacity){
+        this.MAX_CAPACITY = maxCapacity;
+        this.queue = new LinkedList<T>(this.MAX_CAPACITY);
+    }
+
+    // behaviours
+
+    public void enqueue(T task){
+        if(task == null) return;
+        int previousSize = this.queue.size();
+        synchronized(this){
+            if(this.queue.size() == this.MAX_CAPACITY){
+                try {
+                    this.wait();
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+                
+            }
+            queue.add(task);
+            if(previousSize == 0) this.notifyAll();
+        }
+    }
+
+    // 
+    
+    public T dequeue(){
+        int previousSize = this.queue.size();
+        synchronized(this){
+            if(this.queue.size() == 0){
+                try {
+                    this.wait();
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            queue.poll();
+            if(previousSize == this.MAX_CAPACITY) this.notifyAll();
+        }
+    }
+}
+
+

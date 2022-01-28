@@ -1,0 +1,14 @@
+
+ClearTrip:
+
+
+Find out all the common durations of users logged in at the same time in system - had to come up with an approach stating what all data structures can be used and how will the implementation take place.
+
+Design a system to serve ads by advertisers on your platform. Had to give a complete design focussing a lot on LLD and ending with a high level design.
+
+Given a set of ads and advertisers design a system which manages ads for various advertisers who pays per ads. Design schema & api. How to scale them? Some of the given entities are users, ads, advertisers, ads shown.
+
+---------------------------------------------------------------------------
+
+
+

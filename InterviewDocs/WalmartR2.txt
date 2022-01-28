@@ -1,0 +1,337 @@
+
+non-OCI : Creating an Order - Order-1
+
+    OCI : Order-2
+    MOS DB - Invited
+    Java-Agent - VM
+
+Incremental Order - Order id
+EU - 1
+US - 1
+
+Storm
+
+Zookeeper
+
+order -> EU US
+
+----------------------------------
+
+Connection Pool:
+
+Command Pattern
+    JDBC, SSHJDBC,
+    SSH,
+    HTTP Connection
+
+ConnectionPool cp = new SimpleJDBCConnectionPool(4);
+BlockingQueue bq = new BlockingQueue(4);
+
+c1 = cp.getConnection()
+cp.getConnection()
+cp.getConnection()
+cp.getConnection()
+---------------------
+IDLE/ACTIVE
+
+connection {
+
+    ConnectionStateEnum state
+
+    ConnectionStateEnum getConState() {
+        //
+    }
+}
+
+
+BlockingQueue<Connection> queue = PriorityBlockingQueue<>( new Compa)
+
+
+Connection getConnection(){
+
+    if(queue.size() == MAX_CAPACITY && queue.peek().getConState() == ConnectionStateEnum.IDLE){
+        queue.peek().setConState(ConnectionStateEnum.ACTIVE);
+        return queue.peek();
+    }
+    if(queue.peek().getConState() == ConnectionStateEnum.IDLE) {
+
+    }
+    else {
+
+    }
+
+
+}
+
+Cases:
+
+1. Queue is full - peek element is active => wait
+2. Queue is full - peek element is idle => return idle connection and make it active.
+3. Queue is not full - peek element is active => create a new Connection and add it to the queue.
+4. Queue is not full - peek element is idle => return idle connection and make it active.
+5. Queue is empty - create a new Connection and add it to the queue.
+
+Task
+
+releaseConnection() - notifyAll()
+
+-----------
+
+releaseOnTimeOut(Time Timeout){
+
+}
+
+
+4 capacity
+2 Connection - ACTIVE
+
+
+
+------------------------
+
+
+
+
+List - [1,1,2,3,4,4,5]; n list length return 1,4
+n <= 1 mn
+list[i] < n
+without extra space
+-------------------------------
+List<Integer> dups
+
+   0    1    2    3    4    5    6
+=> 1,  -1,  -2,  -3,  -4,  -4,  5
+                                    i
+(-1)*Math.abs(list[list[i]])
+
+list[list[2]] = list[1] = -1
+dups.add(list[i]) => 1,4
+
+list[list[2]] => list[2]
+list[list[3]] => list[3]
+list[list[5]] => list[4]
+list[list[6]] => list[5] = 4
+
+---------------------------------
+
+list - [3, 4, 6, 11, 4, 6, 5] n = 7, return 4,6
+
+n + n-1 + n-2 + ... => n^2
+
+distinct elements - worst case
+
+4,6
+
+---------------------------------
+
+
+list - [3, 4, 6, 11, 4, 6, 5] n = 7, return 4,6
+     
+     0   1   2    3    4    5     6   7
+=>   3   4   6   -11   -4    6   -5   11
+
+11 => will be
+
+4,6
+list[0]
+
+
+
+----------------------------------------------
+
+final
+
+class A {
+
+    final var;
+
+    final 
+
+}
+
+---------
+
+
+final class MyClass {
+
+    //private final int x;
+
+    private MyClass(){}
+
+    static final class Helper {
+        private static MyClass INSTANCE = new MyClass();
+    }
+
+    MyClass  getInstance(){
+        return Helper.INSTANCE;
+    }
+
+}
+
+
+final class MyClass {
+
+    //private final int x;
+    private final MyClass myInstance;
+
+    private MyClass(){}
+
+    /*static final class Helper {
+        private static MyClass INSTANCE = new MyClass();
+    }*/
+
+    MyClass synchronized getInstance(){
+        if(myInstance == null){
+            myInstance = new MyClass();
+        }
+        return myInstance;
+    }
+
+}
+
+--------------------------------------
+
+class A {
+
+    int x;
+    int y;
+
+    static int compute(x){
+        return ++x;
+    }
+
+    static int compute(int x,int y){
+        return x+y;
+    }
+
+}
+
+class B extneds A {
+
+
+
+
+}
+
+
+
+----------------------------------
+
+
+process
+
+can throw - fileNotFoundException, = logging/ ConnotBeDoneException;
+TimeOutException => Retry 3 times. => RetryExhaustionException
+RuntimeException => 
+
+class A {
+
+    int tries = 1;
+    try {
+        retry : while(tries > 0){
+                try {
+                    process ();
+                    tries
+                } catch(FileNotFoundException e){
+
+                    notifyFileNotFoundObserver
+
+                    log(stack trace); // do the logging.
+                    throw new ConnotBeDoneException();
+                } catch(TimeOutException t){
+                    if(tries == 0) {
+                        tries = 3;
+                        continue retry;
+                    }
+                } catch(RuntimeException h){
+                    e.printStackTrace();
+                }
+            }
+    } catch(TimeOutException d){
+        throw new RetryExhaustionException();
+    }
+}
+---------------------
+
+Chain of Responsibility
+
+class Validatior 
+ => ConnotBeDoneValidator
+ => RetryMechanismValidator
+ => 
+
+-------
+
+not related.
+
+Strategy Pattern
+
+     Strategy
+
+     execute
+
+ConnotBeDoneValidationStrategy 
+
+
+process()
+
+Visitor
+
+ConnotBeDoneValidator
+RetryMechanismValidator
+
+--------------------------------------------
+
+Questions Asked:
+
+1. Project Related - What is the latest situation where you've handled a problem by leading and solving.
+Explained: Java Agent and how it works high level - and what problem did I solve there.
+2. Related Questions on designing - how can we sync multiple nodes in a cluster residing in different regions where both the nodes are writing/master nodes.
+Provided solutions to change the design to CQRS, We can use WAL and sync, we can use - locking over to sync the data first and then revert back to the client, cluster manager using zookeeper.
+
+Distributed Txn : 2PC, 3PC, SAGA
+
+3. Project Related = Connection Pool Implementation. Explain the logic and how we're handling timeouts and getting the Connection.
+Explained the connection pool and way its implemented using - PriorityBlockingQueue, how states are maintained, how timeouts are handled.
+4. Find Duplicates in a list - without using extra space => provided O(n) solution. if list[i] < n case. and O(n^2) for other scenario. Forgot to mention - sorting solution O(nlogn)
+5. final Keyword in java => explained with use cases like Immutable/Singleton => how to make a singleton threadsafe ? => synchronized function = making a synchronized block.
+6. Can we overload static methods in java ? / Can we Override static methods ?
+7. Using Exception Handling use case - how we can implement - using Design Patterns => gave solution easy in one single class then structured based on design pattern - Chain of Responsibility, Strategy, Observer => using observer we can trigger an action with exception event.
+
+
+
+
+simultaneously
+req1 =>  app server 1 (master) -- 1 => 2
+req2 =>  app server 2 (master) -- 1 => 2
+
+CQRS => Command and Query Responsibility Segregation
+req2 =>  app server 1 (master) -- 2 => 3
+req1 =>  app server 1 (master) -- 1 => 2
+
+app server 2 (slave) -- 1 => 2
+
+10000/s
+
+req1,req2,........ => req1 app serv 1, req2 => spp serv2
+
+
+-----------
+WAL serv1 
+insert, update - dml - log =>
+-----------
+Distributed Locking - 
+on update lock - trigger - 
+
+
+
+
+
+
+
+
+
+
+
+
+

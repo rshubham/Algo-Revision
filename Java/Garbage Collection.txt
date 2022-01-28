@@ -1,5 +1,12 @@
 Garbage Collection:
 ---------------------------------------
+
+Default garbage collectors:
+
+Java 7 - Parallel GC
+Java 8 - Parallel GC
+Java 9 - G1 GC
+Java 10 - G1 GC
 ---------------------------------------
 
 0. GC is a mechanism for JVM to reclaim heap space from Objects which are eligible for GC.
@@ -63,7 +70,7 @@ Full GC and Concurrent GC:
 2. Concurrent GC goal is to complete the Tenured Gen before it becomes full. This is usually acheived in normal operation.
 3. If Concurrent GC not able to finish before Tenured Gen fills up then application is paused and collection is completed with all other application threads paused, such Collection is referred to as Full GC.
 5. Full GC is a sign that there needs to be some adjustments required in Concurrent Collection Params.
-6. Always try to avoid or minimize full Full GC because it affects the performance of Java applications
+6. Always try to avoid or minimize Full GC because it affects the performance of Java applications
 
 Important Points:
 ---------------------------------------
